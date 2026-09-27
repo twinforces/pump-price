@@ -1,11 +1,15 @@
 # Changelog
 
-## 2026-09-27 The path from the headline to the pump
+## 2026-09-27 The rest of the barrel
 
-- **What:** Wrote [PATH.md](PATH.md). The news price is a futures settlement. Crude is usually benchmark plus differential, not a frozen invoice. Product moves by pipeline to a rack, then a tank truck. The station pays today's rack. Half the crude move is at the pump in about two weeks, 80 percent in about four, per a 2012 Energy Information Administration rule of thumb. That lag gets reestimated. It is not hardcoded.
-- **Why:** The five-step chain was right in outline and wrong at the purchase and at the station.
-- **How:** Energy Information Administration pages on the gasoline path, the 2012 pass-through note, and the 2014 official-selling-price note. Argus on Colonial's transit time.
-- **Hash:** the commit that adds PATH.md.
+- **What:** Wrote [BARREL.md](BARREL.md). Naphtha is a real cut and a real market. Most of it becomes gasoline. The sold share is about 1 percent. California requires a certified deposit-control additive. Ethanol is usual and is not a year-round statewide mandate. The costly rule is the whole recipe.
+- **Why:** The human named naphtha and the California additive, and said every cut has a market.
+- **How:** Energy Information Administration 2023 gallons-per-barrel table and the June 2026 yield page. Air Resources Board pages on deposit-control additives and on ethanol.
+- **Hash:** the commit that adds BARREL.md.
+
+## 2026-09-27 Path from the headline to the pump
+
+- **Hash:** a6623318024ecd3766d8424909d0d275d5fc0066
 
 ## 2026-09-27 Markets
 
