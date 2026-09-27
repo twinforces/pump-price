@@ -6,8 +6,8 @@ Short scratchpad. Older items move to CHANGELOG.md.
 
 - **What:** Stand up `twinforces/pump-price` and an Architect briefing for a web game about gasoline, diesel, and other consumer prices.
 - **Why:** The name and the repo have to exist before design tweaks have a home. The prior Grok chat was named as the spec and could not be read from this workspace.
-- **How:** Ringmaster Architect pass. Repo created private, no game code. Briefing lists eight blocking questions. Commit is the bootstrap of this file.
-- **Hash:** pending this commit.
+- **How:** Ringmaster Architect pass. Repo created private, no game code. Briefing lists eight blocking questions.
+- **Hash:** 71ec8c6a3d8dc168098a52b9254ce1eeed917273
 
 ## Not yet
 
