@@ -2,14 +2,16 @@
 
 Short scratchpad. Older items move to CHANGELOG.md.
 
-## Load the real briefing, then lock the problem
+## Write the price identity before any dollars hit the screen
 
-- **What:** Stand up `twinforces/pump-price` and an Architect briefing for a web game about gasoline, diesel, and other consumer prices.
-- **Why:** The name and the repo have to exist before design tweaks have a home. The prior Grok chat was named as the spec and could not be read from this workspace.
-- **How:** Ringmaster Architect pass. Repo created private, no game code. Briefing lists eight blocking questions.
-- **Hash:** 71ec8c6a3d8dc168098a52b9254ce1eeed917273
+- **What:** Turn the locked calculator into one function: scenario in, prices out, with the series it must be able to track.
+- **Why:** The levers, the map, the graph, MVVM, and the receipts rule are decided. The equation is not. Coding a shell with a made-up curve would freeze a fake.
+- **How:** Next file is `docs/PRICE-IDENTITY.md`. No `src/` until that page names the tests.
+- **Hash:** this commit, once it exists.
 
-## Not yet
+## Done just now
 
-- Do not write a sim, a UI, or `docs/MASTER-DESIGN.md` until the source chat is in the repo or replaced in writing.
-- Do not copy Hormuz mechanics over just because the repo layout is familiar.
+- **What:** Loaded the goal share. Wrote master design, architecture, receipts. Made the repo public.
+- **Why:** The human answered the blocking questions and added MVVM, the header, and the receipts rule.
+- **How:** Share JSON plus a BLS/FRED title check for the basket and gasoline. Diesel weekly id and the diesel CPI id are still marked unconfirmed.
+- **Hash:** see CHANGELOG after this commit is stamped.

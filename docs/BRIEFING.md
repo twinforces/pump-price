@@ -1,65 +1,55 @@
 # Briefing
 
 **Role:** Architect.  
-**Why this role:** new system. The job is to understand the problem before anyone writes a sim.  
-**Status:** blocked on the source conversation. No mechanics are decided.
+**Status:** problem is clear enough to design. Not clear enough to code a price.
 
-Loaded from the Ringmaster pack (`twinforces/grokdevprompts`, plugin `ringmaster` 0.2.1): master prompt, role routing, hygiene playbook, and Architect core values (system as a whole, documentation as first-class, make the right path the easy path).
+## Goal chat
 
-## What this session actually said
+The `/goal` link is a public share of the conversation this repo was supposed to start from.
 
-The ask, in the words we have:
+- Share: https://grok.com/share/bGVnYWN5_3397e417-2d45-47e9-9b1b-9e91146a6122
+- Title: Sim Planning for Next Project
+- Conversation: `d242a5b4-6f13-4016-a92a-e587e6aa7165`
+- Fetched 2026-09-27 from `GET /rest/app-chat/share_links/bGVnYWN5_3397e417-2d45-47e9-9b1b-9e91146a6122` (42 messages). The earlier private URL of the same chat did not load.
 
-> We're building a web game that simulates gasoline, diesel and various consumer prices.
+The share is a voice planning session. The human lines are the spec. The assistant lines are research leads and pitches. Pitches the human did not adopt are not requirements. Dollar figures in that chat are not calibration until [RECEIPTS.md](RECEIPTS.md) says a series was pulled.
 
-Then: read a prior Grok chat as the briefing, make a repo under `twinforces` called Pump Price, and start tweaking the design.
+## What the human locked, across that chat and this session
 
-That is the whole product statement. Everything else below is either a fetch result or an open question.
+1. Subject is gasoline and diesel prices, plus consumer prices. Minimum fuels are both, from one shared crude barrel. Not gasoline alone.
+2. This is a calculator. God levers, not a win condition.
+3. Levers: enable or disable refineries, change policies, adjust fuel taxes, enable or disable country supplies. Also sliders and checkboxes (planning chat).
+4. Turning a supply off changes American prices because the model recomputes. Events stack. They edit supply and demand. They do not add a fixed price bump. Human: "Exactly what I'm thinking about."
+5. Crude quality matters: heavy, light, sour, sweet. Historical data is how the equations get made.
+6. Geography the human named: a map of the United States. Country examples: Venezuela, Gulf, Saudi, Iranian. Regional fuel spec: extra green gasoline in California and Oregon, and that it hits refineries.
+7. Consumer basket the human named: hamburger (per pound), bread, eggs, milk, and toilet paper. Toilet paper means the BLS household-paper-products series, displayed under that name. Emojis are wanted so the basket is readable.
+8. Output: prices on the US map, and a graph of those prices that moves as the levers move.
+9. Header, tests, receipts, public repo: see [ARCHITECTURE.md](ARCHITECTURE.md). Those came in this session, not the share.
 
-## Source chat (not loaded)
+## Explicitly not adopted
 
-Link given:
+The planning assistant pitched these. The human moved on. They are not in v1 unless asked:
 
-https://grok.com/c/d242a5b4-6f13-4016-a92a-e587e6aa7165?rid=8df3b34c-d348-470c-a9ff-f7fb5e6b8e85
+- Map pulsing red when the diesel crack crosses $100.
+- Animated trucks and trains that slow down.
+- A rewind button. The levers are the what-if.
+- Cheese, or a generic box emoji for foods nobody named.
+- A minimum build of one fuel.
+- Pass-through numbers such as "0.15 cents of beef per gallon of diesel." That was a sketch. The fit decides.
+- Any single "diesel is $6.50 today" headline. The same search disagreed with itself. See receipts.
 
-The page is a login-gated app shell. No transcript is in the HTML. `GET https://grok.com/rest/app-chat/conversations/d242a5b4-6f13-4016-a92a-e587e6aa7165` exists and returns `Invalid bearer token` with the keys available in this workspace. Those keys are not a Grok management credential for that chat.
+## Still open
 
-**Do not invent the missing design and call it the briefing.** The chat is the spec until it is pasted or shared.
+These block a honest Model. They do not block the shape of the app.
 
-How to unblock, pick one:
-
-1. Paste the chat (or the decisions) into this thread.
-2. Make a public share link that returns the transcript without a login.
-3. Say "ignore the old chat, here is the design" and state it here.
-
-## Not the spec (context only)
-
-These are nearby facts. They are **not** requirements until you adopt them.
-
-- [Hormuz Toll](https://github.com/twinforces/hormuzboardgame) is a one-sitting browser game. Model has no React. View never owns the rules. Claims have receipts. Oil on that meter cannot print past the 2026 peak.
-- A public note from 19 Sep 2026: gasoline pricing is too complicated to "game" by chasing a penny, and stations make their money on the high-markup shelf (beef jerky), not on the commodity people will cross town to save a cent on. Source: https://x.com/GrumpyTechBro/status/2101439713576161322
-
-If the chat already rejected either of those, they stay rejected.
-
-## Questions that block a design
-
-Answer in any order. A one-line reply per question is enough. "Same as the chat" is not, until the chat is in the repo.
-
-1. **Who is the player?** Household buyer, station owner, jobber, refiner, or more than one role in one sitting?
-2. **What is one sitting?** A single fill-up, a week of street prices, a quarter, a year?
-3. **What prices are in the model on day one?** Gasoline grades, diesel, and which other consumer prices (and which are out of scope)?
-4. **What should the player believe afterward?** One sentence. If we cannot say it, we do not have a game yet.
-5. **What is the score?** Dollars, a basket you can actually buy, a station's gross margin, or something else?
-6. **Where does the argument live?** Same split as Hormuz (pure model, viewmodel, view, receipts page), or a different shape, and why?
-7. **What must not be faked?** Real rack/retail relationships, real units, a ceiling on printed prices, or none of that?
-8. **Repo visibility.** This repo is private. Say if it should be public like Hormuz.
-
-## Architecture (empty on purpose)
-
-No modules, no stack choice, no data model. Choosing them before the eight questions is how a price sim becomes a tycoon skin.
-
-When the questions are answered, the next Architect artifact is `docs/MASTER-DESIGN.md`: the one-sitting claim, the price identities, what is state vs what is a label, and the first slice small enough for an Implementer to build without inventing the economy.
+1. **Price identity.** Which series, which lags, which coefficients. Next Architect note, then tests. Not a View.
+2. **Map grain.** Proposal: PADDs for the fuel surface, with California and Oregon (and Washington only if the Pacific Coast spec claim survives a receipt) able to split off when the green-fuel policy is on. Strike this if you want states on day one.
+3. **Refinery list.** Individual plants versus regional capacity. The planning chat named LyondellBasell Houston, Phillips 66 Los Angeles, and Valero Benicia. Those names are not toggles until a receipt confirms status and capacity.
+4. **Policy catalog.** Seed is fuel tax plus the green West Coast spec. Other policies (export bans, Hormuz) enter as supply edits with a receipt, not as flavor text.
+5. **Country-to-quality table.** Countries are switches. Quality buckets are what the market clears. The mapping is data.
 
 ## Handoff
 
-Not ready for Implementer. The missing input is the source chat, or a replacement for it.
+Not ready for Implementer. A shell with a fake curve would teach the wrong lesson and the tests would lock the fake.
+
+Next Architect artifact: `docs/PRICE-IDENTITY.md`. One page. The function, the series it must track, and the tests that fail if someone replaces it with a bump.
