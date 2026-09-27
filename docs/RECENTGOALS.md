@@ -2,16 +2,16 @@
 
 Short scratchpad. Older items move to CHANGELOG.md.
 
-## Write the price identity before any dollars hit the screen
+## Write the state price identity
 
-- **What:** Turn the locked calculator into one function: scenario in, prices out, with the series it must be able to track.
-- **Why:** The levers, the map, the graph, MVVM, and the receipts rule are decided. The equation is not. Coding a shell with a made-up curve would freeze a fake.
-- **How:** Next file is `docs/PRICE-IDENTITY.md`. No `src/` until that page names the tests.
-- **Hash:** 26d34c37b49daee76cbd7266e9f7ed45c90b6343 is the design lock this goal sits on.
+- **What:** One function from scenario to 50 state price vectors, each number tagged `federal-state`, `station-survey`, or `allocated`.
+- **Why:** The map is states. EIA does not print gasoline for 41 of them, or diesel for 49. The identity has to say which baseline it is matching or the map will lie.
+- **How:** `docs/PRICE-IDENTITY.md`, using [STATE-GRAIN.md](STATE-GRAIN.md) as the constraint. No `src/` until the baseline tests are named against fixtures, not headlines.
+- **Hash:** the commit that adds STATE-GRAIN.
 
-## Done just now
+## Done
 
-- **What:** Loaded the goal share. Wrote master design, architecture, receipts. Made the repo public.
-- **Why:** The human answered the blocking questions and added MVVM, the header, and the receipts rule.
-- **How:** Share JSON plus a BLS/FRED title check for the basket and gasoline. Diesel weekly id and the diesel CPI id are still marked unconfirmed.
-- **Hash:** 26d34c37b49daee76cbd7266e9f7ed45c90b6343
+- **What:** Examined state coverage for fuels, taxes, refineries, and the basket. Locked car and truck emoji. Struck the PADD map.
+- **Why:** The human asked for this before any other modeling.
+- **How:** EIA weekly tables, EIA-888 methodology, AAA state page, BLS average-price factsheet, EIA tax note, EIA refinery capacity report.
+- **Hash:** see CHANGELOG.

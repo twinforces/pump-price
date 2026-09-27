@@ -21,33 +21,38 @@ Quality is the clearing state. Four crude buckets:
 
 Country supplies are inflows into those buckets. A country checkbox sets that inflow to zero. A slider, when we have one, sets how much. The Gulf is a source the human named; it is not "the United States" by another name until the table says so.
 
-Refineries are conversion, not a price. Enabling one adds its capacity and its yield pattern. Disabling one removes them. Two closures stack. The price is whatever clears, not `base + n * bump`.
+Refineries are conversion, not a price. Enabling one adds its capacity and its yield pattern. Disabling one removes them. Two closures stack. The price is whatever clears, not `base + n * bump`. Capacity is a state fact from EIA. Many states are zero.
 
 Policies and taxes are separate from supply:
 
-- A tax is cents per gallon on a named fuel. It moves that retail price by the tax. It does not move the crack.
-- A policy changes a constraint: who may make a fuel, or which region is on a separate spec. The human's example is greener gasoline in California and Oregon, and the refineries that can make it.
+- A tax is cents per gallon on a named fuel in a named state. It moves that retail price by the tax. It does not move the crack.
+- A policy changes a constraint: who may make a fuel, or which state is on a separate spec. The human's example is greener gasoline in California and Oregon, and the refineries that can make it.
 
 Downstream goods are not crudes. Hamburger, bread, eggs, milk, and toilet paper each have their own pass-through. Toilet paper is the display name. The series is household paper products. If the fit says paper does not track crude, the model must be allowed to say that. Forcing it to move is faking.
+
+State grain, and which series actually exist there, is [STATE-GRAIN.md](STATE-GRAIN.md). Short version: the map may show 50 fuel prices. It may not pretend a regional average was measured in that state.
 
 ## What the human sees
 
 - **Header.** "Pump Price". An icon-sized copy of the GrumpyTechBro profile photo. Subtitle "a GrumpyTechBro joint", linking to https://x.com/GrumpyTechBro in a new tab.
 - **Levers.** Checkboxes and sliders. Countries, refineries, policies. A tax control that is a number, not a checkbox.
-- **Map.** United States. Prices for gasoline, diesel, and the basket, at the grain in the briefing (proposal: PADD, with a West Coast split).
-- **Graph.** The same prices, updating when the scenario updates. This is a recalculation, not a simulation clock. If food has a lag, the lag is inside the equation (diesel now, beef later). The picture still updates immediately.
-- **Emoji on the basket.** Milk 🥛, bread 🍞, eggs 🥚, hamburger 🍔, toilet paper 🧻. Fuels stay words so gasoline and diesel do not share one icon. Change this if you want ⛽ with a label.
+- **Map.** The 50 states. Every state shows gasoline (🚗) and diesel (🚚) at once. No District of Columbia unless asked.
+- **Inspector.** Click a state. The other prices: hamburger 🍔, bread 🍞, eggs 🥚, milk 🥛, toilet paper 🧻. Each number shows its basis (`federal-state`, `station-survey`, or `allocated`).
+- **Graph.** US prices until a state is clicked, then that state. Recalculates with the levers. Not a simulation clock. If food has a lag, the lag is inside the equation. The picture still updates immediately.
+- **Emoji.** Fuels are not words. Gasoline is the automobile. Diesel is the truck. Basket emoji unchanged.
 
 ## What we will not fake
 
 - Yields of heavy versus light, sour versus sweet.
 - A refinery's capacity or whether it is actually shut.
-- Regional premia, including any California gap.
+- A state fuel price copied from its PADD when a state survey exists.
+- Alaska or Hawaii diesel copied from PADD 5. EIA does not sample those outlets.
+- A state hamburger, bread, egg, milk, or toilet-paper print. Those are allocated from the region until a real state series shows up.
 - Pass-through from diesel to hamburger, or from anything to paper.
-- A single spot price copied out of a headline when two headlines disagree.
+- Mixing the gasoline column with the diesel column because both are "the fuel price."
 
-Historical series are the judge. The list starts in [RECEIPTS.md](RECEIPTS.md).
+Historical series are the judge. The list is [RECEIPTS.md](RECEIPTS.md).
 
 ## Out of scope until asked
 
-Auth, accounts, a database, a score, multiplayer, animated freight, a rewind control, foods nobody named.
+Auth, accounts, a database, a score, multiplayer, animated freight, a rewind control, foods nobody named, DC on the map.
