@@ -1,65 +1,69 @@
 # State grain
 
-Examined 2026-09-27. The human struck the PADD proposal.
+Examined 2026-09-27, updated the same day for GasBuddy differentials and Census regions.
 
-**Decision.** The map is the 50 states. Every state shows gasoline and diesel at once. A click opens an inspector with the other prices (hamburger, bread, eggs, milk, toilet paper). District of Columbia is not a state and is not on the map unless asked.
+**Decision.** The map is the 50 states. Every state shows gasoline and diesel at once. A click opens an inspector with the other prices. Those other prices are Census-region prices, and the inspector says so. District of Columbia is not on the map.
 
-**Finding.** You can price all 50 states. You cannot observe every input in all 50. The Model is allowed to allocate. It is not allowed to hide the allocation.
+**Finding.** You can price all 50 states. You cannot observe every input in all 50. The Model may allocate. It may not hide the allocation. The hover says which donor and which differential.
 
 ## What the picture is
 
-Default view: 50 states, each with two numbers.
+Default view: 50 states, each with gasoline (automobile) and diesel (truck).
 
-- Gasoline, automobile emoji 🚗
-- Diesel, truck emoji 🚚
+Click a state: inspector for hamburger, bread, eggs, milk, and toilet paper, plus the basis of every number. Basket prices are the state's Census region, not a pretend state print.
 
-Click a state: inspector for that state. The basket uses the emoji already chosen (🍔 🍞 🥚 🥛 🧻). The inspector also shows the basis of each number (below). Hiding the basis would let a copied regional price look like a measurement.
+The graph follows the selection. Before a click, the US series. After a click, that state. Levers recalculate immediately.
 
-The graph follows the same selection. Before a click, the graph is the US series. After a click, it is that state's series. Levers recalculate immediately.
+Hover or tap on any acronym or price name. Copy is [HOVER.md](HOVER.md).
+
+## Census regions are not UPS zones
+
+BLS food average prices publish at the US and, when the sample is big enough, at the four Census regions. That is the grain we will show. Official names: Northeast, Midwest, South, West. They are statistical groupings, not markets and not delivery areas. State lists are the Census Bureau file `reg_div.txt`.
+
+| Region | States | How wide |
+| --- | --- | --- |
+| Northeast | Connecticut, Maine, Massachusetts, New Hampshire, New Jersey, New York, Pennsylvania, Rhode Island, Vermont | Nine states. Maine and Pennsylvania share one beef price. |
+| Midwest | Illinois, Indiana, Iowa, Kansas, Michigan, Minnesota, Missouri, Nebraska, North Dakota, Ohio, South Dakota, Wisconsin | Twelve states. Ohio and the Dakotas share one milk price. |
+| South | Alabama, Arkansas, Delaware, Florida, Georgia, Kentucky, Louisiana, Maryland, Mississippi, North Carolina, Oklahoma, South Carolina, Tennessee, Texas, Virginia, West Virginia. DC is in this region and not on our map. | Sixteen states plus DC. Delaware and Texas share one bread price. |
+| West | Alaska, Arizona, California, Colorado, Hawaii, Idaho, Montana, Nevada, New Mexico, Oregon, Utah, Washington, Wyoming | Thirteen states. Honolulu and Denver share one egg price. |
+
+There are also nine Census divisions inside these regions. The BLS average-price factsheet commits food levels to the four regions, not the nine divisions. We do not invent division prices.
+
+UPS zones are a different object. A zone is a distance band from the shipper's own ZIP code to the destination, roughly 2 through 8 in the lower 48, with Alaska and Hawaii farther out. Move the warehouse and every zone number changes. A Census region does not. Wisconsin to Minnesota can be a short UPS haul and still the same Census region as Wisconsin to Ohio. The inspector must not say "regional, like a shipping zone."
 
 ## What exists at state grain
 
 | Input | All 50? | What we actually have |
 | --- | --- | --- |
-| Gasoline retail, federal survey | No. 9 states. | EIA-878 weekly regular, all formulations, including tax. States published: California, Colorado, Florida, Massachusetts, Minnesota, New York, Ohio, Texas, Washington. Everyone else is a PADD or sub-PADD. Alaska, Hawaii, and Oregon are not state rows. Table: https://www.eia.gov/dnav/pet/pet_pri_gnd_a_epmr_pte_dpgal_w.htm Week of 2026-09-21, US regular $4.478. |
-| Diesel retail, federal survey | No. California only. | EIA-888 weekly on-highway diesel. Published geography is US, PADDs, West Coast less California, and California. https://www.eia.gov/dnav/pet/pet_pri_gnd_a_epd2d_pte_dpgal_w.htm Week of 2026-09-21: US $6.529, California $8.246. The survey frame drops Alaska and Hawaii. https://www.eia.gov/petroleum/supply/weekly/pdf/appendixb.pdf |
-| Gasoline and diesel retail, AAA | Yes, plus DC. | AAA state averages publish regular, mid, premium, and diesel. https://gasprices.aaa.com/state-gas-price-averages/ Page dated 2026-09-27, national regular $4.4798. Same-day mirrors list all 50 and DC for both fuels. AAA is a station survey, not the federal sample. It is the baseline picture for the states EIA does not print. It is not a structural model. |
-| State fuel tax | Yes. | EIA compiles state gasoline and diesel taxes and fees. As of 2026-01-01, state gasoline taxes and fees ran from 9.0 cents/gal (Alaska) to 70.9 (California). State diesel from 9 cents (Alaska) to 87.3 (California). Federal excise is 18.4 cents gasoline and 24.4 cents diesel, unchanged since October 1993. https://www.eia.gov/todayinenergy/detail.php?id=67165 |
-| Refinery capacity | By state, including zeros. | EIA Refinery Capacity Report, Form EIA-820, data for 2026-01-01, released 2026-06-26. Table 1 is count and capacity by PAD district and state. Table 3 is the plant list. https://www.eia.gov/petroleum/refinerycapacity/ A state with no refinery is a real zero, not a missing cell. |
-| Crude by country, and heavy/light sour/sweet | Not a state series. | National and global. A state feels crude through which refineries it has and which PADD it sits in. |
-| Hamburger, bread, eggs, milk | No. | BLS average prices: about 70 foods at the US city average, and at the four Census regions when the sample is large enough. Not at state. Automotive fuels go further (cities, divisions). Foods do not. https://www.bls.gov/cpi/factsheets/average-prices.htm USDA's Food-at-Home Monthly Area Prices is 15 areas and ends in 2018. It cannot be the live state panel. https://www.ers.usda.gov/data-products/food-at-home-monthly-area-prices/documentation |
-| Toilet paper | No. | `CUUR0000SEHN02` is US city average. A regional index may exist. A Wyoming price level does not. |
+| Gasoline retail, federal weekly | No. 9 states. | EIA-878. California, Colorado, Florida, Massachusetts, Minnesota, New York, Ohio, Texas, Washington. Week of 2026-09-21, US regular $4.478. |
+| Diesel retail, federal weekly | No. California only. | EIA-888. US, PADDs, West Coast less California, California. Alaska and Hawaii are outside the sample. Week of 2026-09-21: US $6.529, California $8.246. |
+| Gasoline, all states, annual | Yes, a different price. | EIA SEDS, code MGACD, back to 1970, dollars per million Btu, federal and state tax included, local tax excluded. Not a weekly street price. |
+| Gasoline, all states, monthly | Stopped. | EIA retail by state, excluding taxes, 1983 through 2011. Collection suspended in 2011. Do not extend it. |
+| Gasoline and diesel, AAA, current | Yes, plus DC. | A station survey. Baseline cross-section, not a long history. |
+| Gasoline, GasBuddy | Chart, not a file. | About 10 years, US states, DC, and Canada. The charts page describes gasoline versus crude. No CSV found. Diesel not mentioned. Fine as the differential, if the hover names it. |
+| State fuel tax | Yes. | EIA, as of 2026-01-01. |
+| Refinery capacity | By state, including zeros. | EIA-820, 2026-01-01. |
+| Hamburger, bread, eggs, milk | Census region. | BLS average prices. |
+| Toilet paper | US index. | CUUR0000SEHN02. The inspector still names the Census region and says the index is national. |
 
-The old "$4.48 versus $6.50" fight was two fuels. EIA week of 2026-09-21 is $4.478 regular and $6.529 diesel. AAA on 2026-09-27 is about $4.48 regular and about $6.47 diesel. Same story, different product. Do not average them.
+## How a state fuel price is built
 
-## How a state price is allowed to be built
+Every displayed price carries a basis: `federal-state`, `station-survey`, or `allocated`.
 
-Every displayed price carries a basis:
+Donor rule:
 
-| Basis | Meaning |
-| --- | --- |
-| `federal-state` | EIA prints that state for that fuel. |
-| `station-survey` | No EIA state row. Baseline comes from AAA for that state. |
-| `allocated` | No state measurement. Built from a region, a tax, and a pass-through. Basket items start here. |
+1. If EIA prints that state for that fuel, that series is the history. GasBuddy or AAA is a check.
+2. If EIA does not, the shape comes from the EIA area that contains the state (the PADD or sub-PADD, or an EIA state inside that same area). The level is shifted so the state's gap versus the donor matches a named cross-section. GasBuddy for gasoline. AAA for diesel, until a GasBuddy diesel history is actually in hand.
+3. The hover states the donor and the differential. No silent borrow from another district.
 
-Baseline (all levers at the historical setting the fixture names):
+Legal: "Wisconsin gasoline: weekly shape from EIA Midwest (PADD 2). Level shifted by the GasBuddy gap between Wisconsin and that Midwest series."
 
-- Gasoline in the 9 EIA states matches the EIA state print, not AAA.
-- Gasoline elsewhere matches AAA, and must not be a copy of the PADD average pasted onto every state in the district. Neighbors may be close. They may not be identical unless the survey says so.
-- Diesel in California matches EIA. Diesel in the other 49 matches AAA. Alaska and Hawaii diesel must not be filled with the PADD 5 number. EIA never sampled those outlets.
-- Basket items match the Census region (or US, if that region series is missing), plus a pass-through from that state's fuel gap versus the region. The inspector says `allocated`.
+Illegal: the same sentence with Colorado as the donor. Colorado is PADD 4. Wisconsin is PADD 2. Minnesota is a legal state donor inside the Midwest.
 
-Levers move the structural piece only:
+Alaska and Hawaii diesel must not be copied from PADD 5. EIA never sampled those outlets.
 
-- Tax lever: cents per gallon on that fuel in that state. Retail moves by the tax. The crack does not.
-- Refinery lever: only the states (and the plants) the capacity table lists. Shutting a Gulf Coast plant can move other states through the shared barrel. It does not invent a refinery in a state that has none.
-- Country lever: changes the crude buckets, then yields, then both fuels. States diverge only where tax, spec, or local capacity differs.
-- Green-fuel policy: California and Oregon, as the human named them. Other states join that spec only with a receipt.
-
-A test will fail if six states in one PADD show the same gasoline price at the baseline while AAA says they differ.
+Basket items are `allocated` from the Census region. The hover names the region.
 
 ## What this does not decide
 
-Coefficients, yields, and the pass-through magnitudes. Those belong in `docs/PRICE-IDENTITY.md`, and they have to reproduce the baseline above before any lever is interesting.
-
-The graph-follows-selection rule is the reading of "map of fuels, inspector of the rest." Strike it if the graph should stay national while the inspector changes.
+The size of any GasBuddy gap, the yields, and the pass-throughs. Those wait for `docs/PRICE-IDENTITY.md`. Pulling GasBuddy's chart into a file is a data task with a receipt, not a reason to invent the gap.
