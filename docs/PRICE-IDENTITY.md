@@ -40,9 +40,9 @@ The miss is a percent of the recorded price, absolute, so a high guess and a low
 | --- | --- |
 | 1 percent or less | The success. |
 | 10 percent | Not a success. Also not yet proof that a factor is missing. |
-| 20 percent or more | A factor is missing. It may be one we can measure and left out. It may be one we cannot measure. Speculation is allowed as that name. |
+| 20 percent or more | A factor is missing. It may be one we can measure and left out. It may be the later month, which did not show up in the spot. |
 
-Speculation is not a slider. Naming it does not shrink the miss. A coefficient dialed until the miss falls under 1 percent is the tape copied by another name.
+Speculation is the gap between a later-month future and today's spot. The month will arrive. Whether that gap shows up in the spot is not guaranteed. After the month arrives, the future is scored like the model, as a percent. Neither number is a slider, and neither is subtracted from the retail miss to force a success. The derivation is in [FIT.md](FIT.md).
 
 There is no cents tolerance. A 4 dollar gallon and a 2 dollar gallon are judged on the same percent.
 
@@ -50,4 +50,4 @@ There is no cents tolerance. A 4 dollar gallon and a 2 dollar gallon are judged 
 
 The function from barrels and the demand percent to the crack. The country-to-quality table. The plant-by-plant yields. The grocery pass-through. Those get their own paragraphs here, with the series they were fit on, before a price is allowed to claim the 1 percent.
 
-Until those paragraphs exist, the code may score a miss, apply a tax, scale demand, and account for a plant. It may not print a street price and call it the model.
+Until those paragraphs exist, the code may score a miss, apply a tax, scale demand, account for a plant, and report the curve gap. It may not print a street price and call it the model.
