@@ -8,7 +8,7 @@ What / Why / How, plus the git hash when we have it. Failures stay here.
 - **Why:** The goal chat and the follow-up answers were specific enough to stop guessing the product, and not specific enough to invent yields or pass-throughs.
 - **How:** Fetched the public share. Ignored assistant pitches the human did not adopt. Checked BLS average-price item codes and FRED titles for the basket and for regular gasoline. Did not pull series values.
 - **Did not work:** `GASDESW` page fetch failed this pass, so weekly EIA diesel is still a candidate id. The first private-chat URL still does not return a transcript. Creating the repo private was wrong for this account. Fixed the same day with `gh repo edit --visibility public`.
-- **Hash:** 71ec8c6a3d8dc168098a52b9254ce1eeed917273 was the bootstrap. The public-and-design commit is the one that added MASTER-DESIGN, ARCHITECTURE, and RECEIPTS.
+- **Hash:** 26d34c37b49daee76cbd7266e9f7ed45c90b6343
 
 ## 2026-09-27 Bootstrap
 
