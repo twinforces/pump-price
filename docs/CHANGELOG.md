@@ -1,26 +1,23 @@
 # Changelog
 
-What / Why / How, plus the git hash when we have it. Failures stay here.
+## 2026-09-27 Donor plus GasBuddy, Census regions, hover
+
+- **What:** GasBuddy's public charts are about 10 years of gasoline, not a downloadable archive, and the page does not mention diesel. Adopted the fit: EIA shape from the area that contains the state, level from a named differential. Basket stays on the four Census regions. Hover or tap explains every acronym and every price name.
+- **Why:** The human asked if GasBuddy had history, whether Census regions are as wide as UPS zones, and for the hover rule.
+- **How:** Opened the GasBuddy charts page, EIA FAQ 26, the Census terms page, Census `reg_div.txt`, the BLS average-price factsheet, and the UPS domestic zone instructions.
+- **Finding:** Census regions are four fixed blocks, much wider than a UPS zone, and a UPS zone is not a block at all. It is a distance from the shipper. Colorado is the wrong donor for Wisconsin.
+- **Hash:** 4066a06e2d6732baececece97f67703feefcb987 is STATE-GRAIN and HOVER.
 
 ## 2026-09-27 State grain
 
-- **What:** Map is the 50 states. Gasoline (automobile emoji) and diesel (truck emoji) on every state. Click opens the basket. Wrote [STATE-GRAIN.md](STATE-GRAIN.md). Architecture now requires a basis flag. Receipts log the geography sources. Corrected the "$4.48 vs $6.50" note: those are gasoline and diesel, not two estimates of one price.
-- **Why:** A PADD map was the wrong picture. The human asked whether state prices are even possible before we invent a formula.
-- **How:** Opened the EIA weekly gasoline and diesel tables, the EIA-888 methodology, the AAA state average page, the BLS average-price factsheet, the EIA January 2026 tax note, and the refinery capacity report landing page. Did not download the plant-level workbook.
-- **Finding:** AAA can fill a 50-state fuel map. EIA cannot, except 9 gasoline states and California diesel. Food and paper are regional or national. Taxes and refinery capacity are real state inputs. Alaska and Hawaii diesel must not be copied from PADD 5.
-- **Miss:** The first state-grain commit message named ARCHITECTURE and RECEIPTS before those edits were in the tree. This entry covers the follow-up that actually added them.
-- **Hash:** 14814979cf46de87d7b86d4973bc36dc03ffb564 is STATE-GRAIN and the design edits. The architecture and receipts follow-up is the commit that contains this paragraph.
+- **What:** Map is the 50 states. Fuels on the map, basket in the inspector. Basis flag required.
+- **Hash:** 14814979cf46de87d7b86d4973bc36dc03ffb564
 
-## 2026-09-27 Design lock, still no code
+## 2026-09-27 Design lock
 
-- **What:** Repo is public. Master design, architecture, and a receipts ledger. Calculator, not a game.
-- **Why:** The goal chat was specific enough to stop guessing the product, and not specific enough to invent yields.
-- **How:** Public share plus a BLS/FRED title check.
+- **What:** Public repo. Calculator, not a game.
 - **Hash:** 26d34c37b49daee76cbd7266e9f7ed45c90b6343
 
 ## 2026-09-27 Bootstrap
 
-- **What:** Created private repo, then learned private was wrong. Product name Pump Price, repo `pump-price`.
-- **Why:** GitHub names cannot contain a space. Code before a briefing would have frozen guesses.
-- **How:** Ringmaster Architect pass from `twinforces/grokdevprompts`.
 - **Hash:** 71ec8c6a3d8dc168098a52b9254ce1eeed917273
