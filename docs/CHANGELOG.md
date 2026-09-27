@@ -1,16 +1,21 @@
 # Changelog
 
+## 2026-09-27 Plain language, and the grocery hunt
+
+- **What:** Spelled out the five fuel districts and the State Energy Data System without expecting the short names to carry the meaning. Looked for a state-level grocery survey in the GasBuddy style. Milk has a real city survey. Hamburger, bread, eggs, and toilet paper do not.
+- **Why:** The human asked what the fuel districts are, what the state energy ledger is, and whether anything prices groceries by state. The sim is supposed to teach the author too.
+- **How:** Wikipedia district page, Energy Information Administration Petroleum Supply Monthly appendix, frequently asked question 26, Agriculture Department Retail Milk Prices report for September 2026, Bureau of Economic Analysis regional price parities, Numbeo city prices, the Self.inc Walmart scrape writeup.
+- **Finding:** No milkbuddy. Use the city milk report where a city is surveyed. Do not trust a site that claims the Labor Department publishes state food prices.
+- **Hash:** e6a160e470159a1e047979305e14cdee51b41f16 is PLAIN-LANGUAGE and the hover rewrite.
+
 ## 2026-09-27 Donor plus GasBuddy, Census regions, hover
 
-- **What:** GasBuddy's public charts are about 10 years of gasoline, not a downloadable archive, and the page does not mention diesel. Adopted the fit: EIA shape from the area that contains the state, level from a named differential. Basket stays on the four Census regions. Hover or tap explains every acronym and every price name.
-- **Why:** The human asked if GasBuddy had history, whether Census regions are as wide as UPS zones, and for the hover rule.
-- **How:** Opened the GasBuddy charts page, EIA FAQ 26, the Census terms page, Census `reg_div.txt`, the BLS average-price factsheet, and the UPS domestic zone instructions.
-- **Finding:** Census regions are four fixed blocks, much wider than a UPS zone, and a UPS zone is not a block at all. It is a distance from the shipper. Colorado is the wrong donor for Wisconsin.
-- **Hash:** 4066a06e2d6732baececece97f67703feefcb987 is STATE-GRAIN and HOVER.
+- **What:** GasBuddy charts are about 10 years of gasoline, not a download. Basket on the four Census regions. Hover explains short names and price names.
+- **Hash:** 4066a06e2d6732baececece97f67703feefcb987
 
 ## 2026-09-27 State grain
 
-- **What:** Map is the 50 states. Fuels on the map, basket in the inspector. Basis flag required.
+- **What:** Map is the 50 states. Fuels on the map, basket in the inspector.
 - **Hash:** 14814979cf46de87d7b86d4973bc36dc03ffb564
 
 ## 2026-09-27 Design lock
