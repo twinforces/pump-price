@@ -4,11 +4,12 @@ What / Why / How, plus the git hash when we have it. Failures stay here.
 
 ## 2026-09-27 State grain
 
-- **What:** Map is the 50 states. Gasoline (automobile emoji) and diesel (truck emoji) on every state. Click opens the basket. Wrote [STATE-GRAIN.md](STATE-GRAIN.md). Corrected the "$4.48 vs $6.50" note: those are gasoline and diesel, not two estimates of one price.
+- **What:** Map is the 50 states. Gasoline (automobile emoji) and diesel (truck emoji) on every state. Click opens the basket. Wrote [STATE-GRAIN.md](STATE-GRAIN.md). Architecture now requires a basis flag. Receipts log the geography sources. Corrected the "$4.48 vs $6.50" note: those are gasoline and diesel, not two estimates of one price.
 - **Why:** A PADD map was the wrong picture. The human asked whether state prices are even possible before we invent a formula.
-- **How:** Opened the EIA weekly gasoline and diesel tables, the EIA-888 sampling note, the AAA state average page, the BLS average-price factsheet, the EIA January 2026 tax note, and the refinery capacity report landing page. Did not download the plant-level workbook.
+- **How:** Opened the EIA weekly gasoline and diesel tables, the EIA-888 methodology, the AAA state average page, the BLS average-price factsheet, the EIA January 2026 tax note, and the refinery capacity report landing page. Did not download the plant-level workbook.
 - **Finding:** AAA can fill a 50-state fuel map. EIA cannot, except 9 gasoline states and California diesel. Food and paper are regional or national. Taxes and refinery capacity are real state inputs. Alaska and Hawaii diesel must not be copied from PADD 5.
-- **Hash:** this commit.
+- **Miss:** The first state-grain commit message named ARCHITECTURE and RECEIPTS before those edits were in the tree. This entry covers the follow-up that actually added them.
+- **Hash:** 14814979cf46de87d7b86d4973bc36dc03ffb564 is STATE-GRAIN and the design edits. The architecture and receipts follow-up is the commit that contains this paragraph.
 
 ## 2026-09-27 Design lock, still no code
 
