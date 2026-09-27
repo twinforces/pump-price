@@ -1,11 +1,15 @@
 # Changelog
 
-## 2026-09-27 Markets, the four-way pie, no paranoia term
+## 2026-09-27 The path from the headline to the pump
 
-- **What:** The news barrel is light sweet only. Quality is a field assay from Platts, not PIMCO. Street fuel is the harbor futures contract plus district, tax, and spec. World mix is a four-slice pie, rolled up from finer bins, with the cut points still unwritten. Grocery pass-through is a historical fit against diesel and gasoline separately.
-- **Why:** The human said markets have data, the quoted barrel is not the world, and diesel-to-grocery has to be fit. They also ruled out a conspiracy adder.
-- **How:** Platts Americas crude methodology, July 2026. CME description of the harbor gasoline and diesel contracts. Energy Information Administration refinery input sulfur for June 2026. Eni World Energy Review 2023 for the finer world split.
-- **Hash:** the commit that adds MARKETS.md.
+- **What:** Wrote [PATH.md](PATH.md). The news price is a futures settlement. Crude is usually benchmark plus differential, not a frozen invoice. Product moves by pipeline to a rack, then a tank truck. The station pays today's rack. Half the crude move is at the pump in about two weeks, 80 percent in about four, per a 2012 Energy Information Administration rule of thumb. That lag gets reestimated. It is not hardcoded.
+- **Why:** The five-step chain was right in outline and wrong at the purchase and at the station.
+- **How:** Energy Information Administration pages on the gasoline path, the 2012 pass-through note, and the 2014 official-selling-price note. Argus on Colonial's transit time.
+- **Hash:** the commit that adds PATH.md.
+
+## 2026-09-27 Markets
+
+- **Hash:** 82f4eaff4c78f3692b51e60efff0f8e5157fcbff
 
 ## 2026-09-27 Inputs and graded outputs
 
