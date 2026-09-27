@@ -17,7 +17,15 @@ Hormuz is the last chapter. It is not in the first reel.
 
 A week at a time. The national gasoline and diesel lines draw themselves. The map takes the weekly federal print for each fuel district, and the nine states where gasoline is actually surveyed. The graph is the same numbers, not a second opinion.
 
-This playback does not wait on the price identity. It is the tape. When a model exists, its homework is to replay these three chapters and show the miss in public. Matching the tape by being fed the tape is not a pass.
+This playback does not wait on the price identity. It is the tape.
+
+## The pass
+
+A model that cannot reproduce the recorded prices is not validated. That is the rule. The movie of the tape is not the test. The test is a second line, drawn from crude, demand, the plants, the taxes, and the specs, landing on the tape.
+
+Copying the tape into the formula is not a pass. A residual is not a story. It is a miss, and the miss is shown. The tolerance (how many cents counts as a hit) gets written down before anyone says the model works. Hormuz is not used while fitting. It is the week we were not allowed to see.
+
+The Tesla Semi does not get a term in chapters 1 through 3. The trucks on the road in those years cannot move a national diesel price. If the fit needs them, the fit is wrong. See [SEMI.md](SEMI.md).
 
 ## Do we have the data?
 
