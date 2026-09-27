@@ -16,7 +16,7 @@ export const SCORE = {
   genius: 0.01,
   /** Ten percent is not a success. It is also not yet a missing factor. */
   notASuccess: 0.1,
-  /** At or over this, a measured lever is missing. Speculation may be named. It may not be tuned. */
+  /** At or over this, a measured lever is missing, or the later month did not show up in the spot. */
   missingFactor: 0.2,
 } as const;
 
@@ -93,6 +93,24 @@ export function renewableDiesel(plants: readonly Plant[]): number {
  */
 export function retailFromCrack(crackDollarsPerGallon: number, taxDollarsPerGallon: number): number {
   return crackDollarsPerGallon + taxDollarsPerGallon;
+}
+
+/**
+ * A later-month future minus today's spot, same barrel.
+ * Positive: the market pays more for the later month than for oil now.
+ * The month will arrive. This gap is not proof the later month's story will.
+ * Not a coefficient. Callers do not adjust it to shrink a retail miss.
+ */
+export function curveGap(laterMonthFuture: number, spot: number): number {
+  return laterMonthFuture - spot;
+}
+
+/**
+ * After the month arrives: how far that future was from the spot that showed up.
+ * A percent, same score as a retail miss. It grades the expectation. It is not fed back into the fit.
+ */
+export function expectationMiss(futureWhenQuoted: number, spotWhenMonthArrived: number): number {
+  return percentMiss(spotWhenMonthArrived, futureWhenQuoted);
 }
 
 export function alaskaDieselBasis(): Basis {

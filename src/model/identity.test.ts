@@ -14,6 +14,8 @@ import {
   renewableDiesel,
   retailFromCrack,
   scoreBand,
+  curveGap,
+  expectationMiss,
   type Plant,
 } from "./identity.ts";
 
@@ -90,5 +92,18 @@ describe("plants and tax", () => {
     assert.equal(alaskaDieselBasis(), "station-survey");
     assert.equal(californiaDieselBasis(), "federal-state");
     assert.notEqual(alaskaDieselBasis(), californiaDieselBasis());
+  });
+});
+
+describe("speculation", () => {
+  it("derives the gap from a later month and the spot, and does not tune it", () => {
+    assert.equal(curveGap(80, 70), 10);
+    assert.equal(curveGap(60, 70), -10);
+  });
+
+  it("grades whether the month mattered only after the month arrives", () => {
+    assert.equal(expectationMiss(80, 80), 0);
+    assert.equal(scoreBand(expectationMiss(88, 80)), "not-a-success");
+    assert.equal(scoreBand(expectationMiss(96, 80)), "missing-factor");
   });
 });
