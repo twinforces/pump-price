@@ -1,13 +1,17 @@
 # Changelog
 
+## 2026-09-27 Markets, the four-way pie, no paranoia term
+
+- **What:** The news barrel is light sweet only. Quality is a field assay from Platts, not PIMCO. Street fuel is the harbor futures contract plus district, tax, and spec. World mix is a four-slice pie, rolled up from finer bins, with the cut points still unwritten. Grocery pass-through is a historical fit against diesel and gasoline separately.
+- **Why:** The human said markets have data, the quoted barrel is not the world, and diesel-to-grocery has to be fit. They also ruled out a conspiracy adder.
+- **How:** Platts Americas crude methodology, July 2026. CME description of the harbor gasoline and diesel contracts. Energy Information Administration refinery input sulfur for June 2026. Eni World Energy Review 2023 for the finer world split.
+- **Hash:** the commit that adds MARKETS.md.
+
 ## 2026-09-27 Inputs and graded outputs
 
-- **What:** Wrote [IO.md](IO.md). Fuel economics use the wartime districts because that is where the refineries and the pipelines are. Groceries use Census regions. The stopped 1983-2011 state gasoline survey is a holdout test. Heat units never become an output.
-- **Why:** The human asked whether those districts match the refineries, sighed at the heat units and the dead survey, and asked for the input and output list.
-- **How:** January 1, 2026 capacity tables. United States 130 refineries, 18,160,493 barrels per calendar day. Gulf Coast 58 refineries, 9,876,563 barrels per calendar day. The 2016 East Coast and Gulf Coast fuels study for the pipeline story.
-- **Hash:** the commit that adds IO.md.
+- **Hash:** a948be49502cff99c0a32a0bee57c3a06ff68012
 
-## 2026-09-27 Plain language, and the grocery hunt
+## 2026-09-27 Plain language
 
 - **Hash:** e6a160e470159a1e047979305e14cdee51b41f16
 
