@@ -1,11 +1,15 @@
 # Changelog
 
+## 2026-09-27 Tertiary butyl alcohol
+
+- **What:** The T chemical is tertiary butyl alcohol (TBA). It was an oxygenate, and it is what methyl tertiary-butyl ether (MTBE) becomes in groundwater. Neither is a current California pump requirement. The detergent and the recipe still are.
+- **Why:** The human remembered an additive starting with T and a toxic breakdown.
+- **How:** Air Resources Board gasoline pages (MTBE banned in California gasoline after December 31, 2003). EPA notes on MTBE turning into TBA, especially in southern California groundwater. A 2021 review that California has no enforceable drinking-water limit for TBA.
+- **Hash:** the commit that adds this note.
+
 ## 2026-09-27 The rest of the barrel
 
-- **What:** Wrote [BARREL.md](BARREL.md). Naphtha is a real cut and a real market. Most of it becomes gasoline. The sold share is about 1 percent. California requires a certified deposit-control additive. Ethanol is usual and is not a year-round statewide mandate. The costly rule is the whole recipe.
-- **Why:** The human named naphtha and the California additive, and said every cut has a market.
-- **How:** Energy Information Administration 2023 gallons-per-barrel table and the June 2026 yield page. Air Resources Board pages on deposit-control additives and on ethanol.
-- **Hash:** the commit that adds BARREL.md.
+- **Hash:** 4d6799fd1097c8b3cb3be7551e828077b2f4a825
 
 ## 2026-09-27 Path from the headline to the pump
 
