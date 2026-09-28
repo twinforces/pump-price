@@ -1,19 +1,13 @@
-# Kharg is not the gorilla
+# Kharg, as a hypothetical
 
-Locked 2026-09-27. The strait is the shock. One island is not a separate pump coefficient.
+Locked 2026-09-27, corrected the same night. The island is not treated as already bombed. A March writeup claimed a strike. That claim is not the scenario.
 
-Iran loaded about 1.6 million barrels a day of crude in 2025, and about 96 percent of it left from Kharg, according to a shipping count. The world balance is about 100 million barrels a day. From January to April 2026, world supply in the outlook fell from about 106 million barrels a day to about 95, while demand stayed near 100. That hole is several times the island.
+Iran in 2025 produced about 4.8 million barrels a day of liquid fuels, which was 4.5 percent of a world near 107 million. Crude was about 3.4 million barrels a day, 3.2 percent of that world. Not 7 percent.
 
-The same months, on the Gulf:
+The 0.7 percent figure is the leftover if someone starts from 7 and keeps a tenth. The arithmetic of a tenth is fine. The 7 is not. A tenth of the measured 4.5 percent is about half a percent of the world, and the part removed would be about 4 percent, not a world that falls to 0.7.
 
-| | January | April | Change |
-| --- | --- | --- | --- |
-| US crude | $60 | $100 | +$40 a barrel, about 95 cents a gallon |
-| Gasoline harbor | $2.04 | $3.17 | +$1.13 |
-| Diesel harbor | $2.08 | $3.94 | +$1.85 |
-| Gasoline pump | $2.39 | $3.71 | +$1.32 |
-| Diesel pump | $3.21 | $5.19 | +$1.98 |
+Kharg is narrower than that. About 90 to 96 percent of Iran's crude exports load there, and those exports were about 1.6 million barrels a day. That is roughly half of Iran's crude, because the other half is refined and burned at home. Taking the island's loadings off the water is about 1.5 million barrels a day, around 1.4 percent of the world. It does not take 90 percent of Iranian production off the world.
 
-The pump followed the harbor. Crude alone does not explain the diesel harbor. About 95 cents of the diesel move is the barrel of oil. About 90 cents more is the product pulling away from crude. Gasoline's harbor only pulled away by about 18 cents. Heavy, sour supply matters, and it shows up in diesel.
+Two different "half" claims are in circulation. One is temporary: if the exports cannot leave, production has to fall by about the export half until the tanks and the domestic refineries can take no more. The other is permanent damage to the wells. A 2026 survey of past Iranian shut-ins says the industry can restart near 70 percent and regain most of the rest within a few months. A separate well example says a year of unmanaged shut-in can cut a mature well by about half. The permanent half is not a measured country result, and it is not in the model.
 
-A report from March 2026 says the island was bombed and loadings still ran above 1.5 million barrels a day. If that count is right, the pump move above is not a clean "Kharg off" experiment. It is the larger hole. We do not have a measured effect for the island by itself.
+For scale only, not as a price formula: the spring 2026 world supply drop was about 10 million barrels a day and came with about $40 on US crude and about $2 on the Gulf diesel pump. The island's export flow is a fraction of that hole. Ninety percent of Iran's whole liquids output would be about 4 million barrels a day, still smaller than that 2026 drop. No cents are fitted to either case.
