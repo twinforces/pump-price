@@ -8,8 +8,10 @@ Supply and demand each sit near 100 million barrels a day. The gap is usually un
 
 April 2020, demand was about 80 million barrels a day and supply was still about 100. The surplus was about 19 million barrels a day. US crude was $17.
 
-Spring 2026, the published balance shows supply falling to about 95 million barrels a day while demand stayed near 100. US crude rose from about $60 in January to about $100 in April. Those months are still being revised. They are outside the weeks we score.
+Spring 2026, the published balance shows supply falling to about 95 million barrels a day while demand stayed near 100. US crude rose from about $60 in January to about $100 in April. Those months are still being revised. They are outside the weeks we score. The strait chart is not a ship count. See STRAIT.md.
 
-A short month does not have one price. The deficits of late 2020 and 2021, after the collapse, came with crude around $40 to $70. The surpluses of 2023 came with crude around $80. June 2022 was short by about 1 million barrels a day and crude was $115. A bigger hole in 2026 did not print a higher price than that.
+Set the strait aside. The eye is right: the US price does not follow world supply or world demand. A score of how the levels move together looks mild only because both the price and the demand wandered up from 2016 toward 2022. Take that straight drift out, and the link is about zero. Month to month, leaving out spring 2020, a change in demand does not come with a change in price. A change in supply barely does. The gap between supply and demand does not either.
 
-Venezuela is not this line. A few hundred thousand barrels a day, or even 630,000 in June 2026, are a rounding error on 100 million. They matter because the barrel is heavy and sour, which is a different question from the world total.
+A short month does not have one price. The deficits of late 2020 and 2021, after the collapse, came with crude around $40 to $70. The surpluses of 2023 came with crude around $80. June 2022 was short by about 1 million barrels a day and crude was $115.
+
+Venezuela is not this line. A few hundred thousand barrels a day are a rounding error on 100 million. They matter because the barrel is heavy and sour, which is a different question from the world total.
