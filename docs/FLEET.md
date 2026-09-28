@@ -12,8 +12,10 @@ Ultra-low-sulfur diesel, United States, prices excluding taxes. Fifty months, Ja
 
 In the last month, February 2011, retail sales were $3.00, commercial $2.94, wholesale $2.82. All excluding taxes.
 
-Six cents is what a commercial buyer paid under the retail sales price, in that window. It is not thirty cents, and it is not the fifty-cent discount a card advertisement quotes off a posted truck-stop price in a later spike. Those advertisements are not a series of gallons.
+The 18 cents is in the model as that vintage. It is a piece of the path from wholesale to the posted price. It is not subtracted from the weekly score, because the years we score are missing. The range in that old window ran as high as 32 cents. Eighteen is the typical month, not a ceiling we fit.
 
-A February 2025 marketing table, the kind that still gets published, shows refiners selling about 153 million gallons a day of diesel for resale and about 8 million a day to end users. The end-user price was about 11 cents over the resale price, taxes excluded. That is a refiner selling to a bulk buyer. It is not a fleet card at a truck stop, and one month is not a history.
+Six cents is what a commercial buyer paid under the retail sales price. It is not the diesel leftover, and it is not the discount a card advertisement quotes off a posted truck-stop price in a later spike.
 
-So the candidate is not measured for 2015 through 2025. The old commercial gap is about 6 cents, too small to be the diesel leftover. The posted-versus-card gap in a tight year may be larger, and we do not have it.
+A February 2025 marketing table shows refiners selling about 153 million gallons a day of diesel for resale and about 8 million a day to end users. The end-user price was about 11 cents over the resale price, taxes excluded. One month, and not a fleet card.
+
+Keep looking. The download stops in 2011. The agency's feed wants a key. The rack service is paid. None of those is a reason to invent the missing years.
