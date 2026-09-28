@@ -1,23 +1,23 @@
-# The strait is not a switch
+# The strait is a percent
 
-Locked 2026-09-27, from a same-day note by Alexander Stahel. His hull counts and his freight are his tally, cross-checked as far as he says he can. They are not a federal series. The shape is what we keep. The fit still may not see any week after June 16, 2025. This chapter is the grade.
+Locked 2026-09-27. Hormuz is not off or on. It is a percent of the barrels that would have moved. The fit still may not see any week after June 16, 2025. A same-day tally by Alexander Stahel is a sketch of the grade, not a federal series and not a coefficient.
 
-## What he says is happening
+## The percents
 
-By September 2026 the Gulf producers are not waiting on a fully open strait. A shuttle of very large crude carriers runs the short, dangerous hop out along the Oman coast, unloads onto another ship in the Gulf of Oman, and goes back in for another load. He counts on the order of 116 hulls in that trade. He puts the price of the hop at about $212 a tonne, which is about $28 to $30 a barrel. A ten-to-fifteen-day trip with 2 million barrels is on the order of $58 million.
+| Lever | What 100 percent means | What makes it interesting |
+| --- | --- | --- |
+| Neighbors through the strait | The baseline barrels from Saudi Arabia, the Emirates, Kuwait, Iraq, and Qatar that used to leave by the strait. | The shuttle, the night windows, and ships with the tracker off. Money finds a way. The percent falls. It does not have to hit zero. |
+| Iran | Iran's own baseline loadings. | The blockade is the policy. Leakage is the percent that still leaves. The policy number and the barrel number are not the same, and the gap between them is the point. |
+| The east-west line | The barrels that can reach the Red Sea without entering the strait. | It is a separate door. Hitting the pump stations drops this percent on its own. It does not answer the strait percent. |
 
-Saudi Arabia first tried the back door: the east-west line to the Red Sea, then a ship. He says that carried about 4.5 million barrels a day of crude in June, 30 to 40 percent below the January baseline, plus products. The southern exit closed after mid-July. The long way around Africa to Asia was too expensive. In September, strikes on the east-west pump stations sent them back to the shuttle. Iran's own loadings at Kharg, he says, have basically not happened since August. Those are his sentences. The map only needs the doors.
+A headline that says closed is rounded down. It is not an input. The input is the percent still moving.
 
-## What the lever becomes
+## Why the percent is not zero
 
-Hormuz is not off or on.
+The workarounds are the mechanism, not extra knobs. A short hop along the Oman coast, a ship-to-ship handoff, a night transit, a tracker switched off. Stahel's sketch puts on the order of 116 hulls in that hop, ten to fifteen days, about $28 to $30 a barrel. That freight is a cost on the barrels that paid it. It is not a reason to set the volume to zero.
 
-| Door | What it does |
-| --- | --- |
-| The shuttle | Barrels still leave. The short hop is 10 to 15 days, then a normal ocean voyage on the second ship. The freight is a cost on those barrels, on the order of $30 a barrel in his tally. |
-| The east-west line to the Red Sea | A bypass that does not enter the strait. It can be shut on its own, which is what he says happened to the pump stations. |
-| Iran's own loadings | A different switch from the neighbors. His claim is that this one is the one that actually stopped. |
+Thirty dollars a barrel is 71 cents a gallon if the whole freight landed in the product, because a barrel is 42 gallons. That is the ceiling on a shuttle barrel. It is not the California pump. The Kern pipe and the Alaska tanker never enter the strait.
 
-Thirty dollars a barrel is 71 cents a gallon if the whole freight landed in the product, because a barrel is 42 gallons. That is the ceiling on a barrel that actually took the shuttle. It is not the California pump. Most of California's foreign crude is not from the strait, and the Kern pipe and the Alaska tanker do not pay this freight.
+## What the screen shows
 
-The screen shows the doors, the ship still on the hop, and the freight as a cost on the barrels that used it. A single "strait closed" lever that zeroes the volume is the picture this chapter already falsified.
+Three percents, not one switch. The media word, if we show it, sits next to the percents so the rounding is visible. Leakage is Iran's percent when the policy says none.
