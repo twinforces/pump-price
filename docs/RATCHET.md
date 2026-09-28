@@ -1,27 +1,31 @@
-# The ratchet
+# The ratchet, run
 
-Locked 2026-09-27. The station sign is the higher of replacement cost and acquisition cost, plus the dime. The dime does not change which one wins.
-
-## The rule
-
-Station price = max(replacement cost, acquisition cost) + about a dime.
-
-Replacement cost is the next truckload. Acquisition cost is what they paid for the gallons still in the ground.
-
-A rise makes replacement the higher one, so the sign jumps the same day, even if the tank is full of cheaper gallons. A fall makes acquisition the higher one, so the sign stays until those gallons are sold. The station does not volunteer to sell below what it paid, and it does not sell below what the next gallon will cost.
-
-A ten-dollar move in the barrel is 24 cents a gallon. That is more than the dime, so the sign has to follow it up.
-
-max(replacement, acquisition) + the dime is the same choice as max of the two costs after the dime is added to each. The profit is not a third lever.
+Locked 2026-09-27. The sign is the higher of this week's harbor and the average cost of the gallons still in the tank, plus the tax, plus the leftover. The leftover is the median gap on the weeks outside spring 2020. Spring does not set it.
 
 ## The tank
 
-How long the old cost lasts is the tank divided by daily sales. A busy station turns in a few days. A quieter one lags the town because it is still selling gallons it already paid for. Mather's Market does not get its own number until someone has its tank and its sales.
+A normal week replaces half the tank. That is two weeks of cover, the quieter station, not a number searched for a better score. When sales fall, the same gallons last longer. Cover is two weeks times normal sales over that week's sales. It is not allowed to exceed eight weeks. Normal sales are the 2019 median.
 
-## The town
+Gasoline sales fell from about 9.2 million barrels a day in late February 2020 to 5.1 million in early April, about 55 percent. A two-week tank became three or four weeks. Not eight.
 
-The formula has no competitors in it. A station across the street can be cheaper because it refilled sooner. The proposed shove is about 15 cents under. Past that, the sign can be forced through acquisition cost. That shove was not searched against the pump.
+## What moved
 
-## March 2020
+Gulf Coast, January 2015 through June 16, 2025. 546 weeks.
 
-If sales stop, acquisition cost never updates, and the sign stays up. That week is the test of the rule, not a week to delete. It stays on the chart. It still does not set the dime.
+| | No tank | Two-week tank, stretched by sales |
+| --- | --- | --- |
+| Gasoline, half the weeks within | 2.3 percent | 2.1 percent |
+| Gasoline, inside 1 percent | 22 percent of weeks | 26 percent |
+| Gasoline, outside 10 percent | 10 weeks | 8 weeks |
+| Diesel, half the weeks within | 3.4 percent | 3.2 percent |
+| Diesel, outside 10 percent | 26 weeks | 18 weeks |
+
+The worst gasoline week, March 30, 2020, goes from 42 percent low to 28. Still outside. May 4 is still about 22 percent low. By then a three-week tank would already have been filled with the cheap harbor, and the sign had not come down. That remainder is not the tank.
+
+The Omicron week, December 6, 2021, moves inside. Gasoline from 13 percent low to 9. Diesel from 11 to 8.
+
+October 31, 2022 does not move. The harbor jumped and the sign did not. The ratchet raises the sign the same week the harbor rises. It does not make the station wait on the way up.
+
+January 2015 diesel stays outside, about 14 percent low. That fall lasted longer than the tank.
+
+The ordinary week is almost unchanged. The ratchet is a story about the tail.
