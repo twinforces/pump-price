@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { pullCrudeWeeks, pullLatestWeek } from "../lib/today";
+import { pullCrudeWeeks, pullLatestWeek, type LatestWeek } from "../lib/today";
+import { SAVED_WEEK } from "../lib/saved-week";
 import { epicFuryPlay } from "../model/epic";
 import { DELAY } from "../model/identity";
 import { STATION, acquisitionCost, maxGallon, stationSign } from "../model/station";
@@ -123,32 +124,40 @@ export function Timing() {
 
   useEffect(() => {
     let live = true;
+
+    function takeWeek(pulled: LatestWeek) {
+      const next = inputsFromWeek(pulled);
+      if (!next) {
+        setNote("The latest week did not load.");
+        return;
+      }
+      const seeded = Array(HISTORY).fill(next.crude);
+      setWeek(next);
+      setBarrel(next.crude);
+      setHistory(seeded);
+      historyRef.current = seeded;
+      barrelRef.current = next.crude;
+      setRunning(false);
+      setDay(0);
+      const flat = invoicePump("Oregon", next.crude, next) ?? 0;
+      const dieselFlat = dieselPump("Oregon", next.crude, next) ?? 0;
+      setPumpTrail(Array(TRAIL).fill(flat));
+      setAverageTrail(Array(TRAIL).fill(flat));
+      setDieselPumpTrail(Array(TRAIL).fill(dieselFlat));
+      setDieselAverageTrail(Array(TRAIL).fill(dieselFlat));
+      setNote(
+        pulled.stale
+          ? `The live file did not load. Showing the week of ${next.week}. Move the barrel and it starts.`
+          : `Clock is frozen on the week of ${next.week}. Move the barrel and it starts.`,
+      );
+    }
+
     void pullLatestWeek()
       .then((pulled) => {
-        if (!live) return;
-        const next = inputsFromWeek(pulled);
-        if (!next) {
-          setNote("The latest week did not load.");
-          return;
-        }
-        const seeded = Array(HISTORY).fill(next.crude);
-        setWeek(next);
-        setBarrel(next.crude);
-        setHistory(seeded);
-        historyRef.current = seeded;
-        barrelRef.current = next.crude;
-        setRunning(false);
-        setDay(0);
-        const flat = invoicePump("Oregon", next.crude, next) ?? 0;
-        const dieselFlat = dieselPump("Oregon", next.crude, next) ?? 0;
-        setPumpTrail(Array(TRAIL).fill(flat));
-        setAverageTrail(Array(TRAIL).fill(flat));
-        setDieselPumpTrail(Array(TRAIL).fill(dieselFlat));
-        setDieselAverageTrail(Array(TRAIL).fill(dieselFlat));
-        setNote(`Clock is frozen on the week of ${next.week}. Move the barrel and it starts.`);
+        if (live) takeWeek(pulled);
       })
       .catch(() => {
-        if (live) setNote("The latest week did not load.");
+        if (live) takeWeek(SAVED_WEEK);
       });
     return () => {
       live = false;

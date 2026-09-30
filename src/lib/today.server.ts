@@ -3,10 +3,12 @@ import { mkdtemp, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
+import * as XLSX from "xlsx";
 
 import { iowaEthanolPrice } from "../model/ethanol.ts";
 import { crudeDaysAgo, importTravelPerGallon } from "../model/state-invoice.ts";
 import { VOYAGES, type ImportTravel, type VoyageId } from "../model/voyage.ts";
+import { SAVED_WEEK } from "./saved-week.ts";
 
 const execFileAsync = promisify(execFile);
 
@@ -50,54 +52,58 @@ export type LatestWeek = {
     diesel: { date: string; crack: number };
   } | null;
   importTravel: ImportTravel | null;
+  /** True when the live files missed and this is the last week that did load. */
+  stale?: boolean;
 };
 
-const READ_LAST = `
-import json, sys, xlrd
-wb = xlrd.open_workbook(sys.argv[1])
-sh = wb.sheet_by_name("Data 1")
-last = None
-for r in range(3, sh.nrows):
-    raw, v = sh.cell_value(r, 0), sh.cell_value(r, 1)
-    if raw == "" or v == "" or v is None:
-        continue
-    last = {"date": xlrd.xldate_as_datetime(raw, wb.datemode).date().isoformat(), "value": float(v)}
-if last is None:
-    raise SystemExit("empty workbook")
-print(json.dumps(last))
-`;
+type SheetCell = string | number | boolean | Date | null | undefined;
+type WeekPoint = { date: string; value: number };
 
-const READ_WEEKS = `
-import json, sys, xlrd
-wb = xlrd.open_workbook(sys.argv[1])
-sh = wb.sheet_by_name("Data 1")
-rows = []
-for r in range(3, sh.nrows):
-    raw, v = sh.cell_value(r, 0), sh.cell_value(r, 1)
-    if raw == "" or v == "" or v is None:
-        continue
-    rows.append({"date": xlrd.xldate_as_datetime(raw, wb.datemode).date().isoformat(), "value": float(v)})
-print(json.dumps(rows))
-`;
+function rowsOf(buf: Buffer): SheetCell[][] {
+  const book = XLSX.read(buf, { type: "buffer", cellDates: true });
+  const sheet = book.Sheets["Data 1"];
+  if (!sheet) throw new Error("the price file has no data sheet");
+  return XLSX.utils.sheet_to_json<SheetCell[]>(sheet, { header: 1, raw: true });
+}
 
-const READ_QUALITY = `
-import json, sys, xlrd
-wb = xlrd.open_workbook(sys.argv[1])
-sh = wb.sheet_by_name("Data 1")
-last = None
-for r in range(3, sh.nrows):
-    raw, sulfur, api = sh.cell_value(r, 0), sh.cell_value(r, 1), sh.cell_value(r, 2)
-    if raw == "" or sulfur == "" or api == "" or sulfur is None or api is None:
-        continue
-    last = {
-        "month": xlrd.xldate_as_datetime(raw, wb.datemode).date().isoformat(),
-        "sulfur": float(sulfur),
-        "api": float(api),
-    }
-if last is None:
-    raise SystemExit("empty quality workbook")
-print(json.dumps(last))
-`;
+function asDate(raw: SheetCell): string | null {
+  if (raw instanceof Date && !Number.isNaN(raw.getTime())) return raw.toISOString().slice(0, 10);
+  if (typeof raw === "string" && /^\d{4}-\d{2}-\d{2}/.test(raw)) return raw.slice(0, 10);
+  return null;
+}
+
+function asNumber(raw: SheetCell): number | null {
+  return typeof raw === "number" && Number.isFinite(raw) ? raw : null;
+}
+
+function pointsFrom(buf: Buffer): WeekPoint[] {
+  const rows: WeekPoint[] = [];
+  for (const row of rowsOf(buf).slice(3)) {
+    const date = asDate(row?.[0]);
+    const value = asNumber(row?.[1]);
+    if (date && value !== null) rows.push({ date, value });
+  }
+  if (rows.length === 0) throw new Error("empty workbook");
+  return rows;
+}
+
+async function fetchBook(url: string): Promise<Buffer> {
+  const response = await fetch(url, { headers: { "User-Agent": "pump-price" } });
+  if (!response.ok) throw new Error("the price file did not load");
+  return Buffer.from(await response.arrayBuffer());
+}
+
+function qualityFrom(buf: Buffer): NonNullable<LatestWeek["quality"]> {
+  let last: LatestWeek["quality"] = null;
+  for (const row of rowsOf(buf).slice(3)) {
+    const month = asDate(row?.[0]);
+    const sulfur = asNumber(row?.[1]);
+    const api = asNumber(row?.[2]);
+    if (month && sulfur !== null && api !== null) last = { month, sulfur, api };
+  }
+  if (!last) throw new Error("empty quality workbook");
+  return last;
+}
 
 const READ_ETHANOL = `
 from pypdf import PdfReader
@@ -106,20 +112,11 @@ reader = PdfReader(sys.argv[1])
 print("\\n".join((page.extract_text() or "") for page in reader.pages))
 `;
 
-async function latestValue(url: string, dir: string, name: string): Promise<{ date: string; value: number }> {
-  const response = await fetch(url, { headers: { "User-Agent": "pump-price" } });
-  if (!response.ok) throw new Error("the price file did not load");
-  const path = join(dir, `${name}.xls`);
-  await writeFile(path, Buffer.from(await response.arrayBuffer()));
-  const { stdout } = await execFileAsync("python3", ["-c", READ_LAST, path], { timeout: 20000 });
-  return JSON.parse(stdout) as { date: string; value: number };
-}
-
-type WeekPoint = { date: string; value: number };
-
-async function readWeeks(path: string): Promise<WeekPoint[]> {
-  const { stdout } = await execFileAsync("python3", ["-c", READ_WEEKS, path], { timeout: 20000 });
-  return JSON.parse(stdout) as WeekPoint[];
+async function latestValue(url: string): Promise<{ date: string; value: number }> {
+  const points = pointsFrom(await fetchBook(url));
+  const last = points[points.length - 1];
+  if (!last) throw new Error("empty workbook");
+  return last;
 }
 
 /** Crack versus the anchor crude, so today's oil line plus this crack equals the older dock. */
@@ -141,30 +138,35 @@ function crackDaysBack(spot: WeekPoint[], crude: WeekPoint[], targetDays: number
 
 /** Cushing weekly West Texas Intermediate on or after `since`. */
 export async function loadCrudeWeeks(since: string): Promise<WeekPoint[]> {
-  const dir = await mkdtemp(join(tmpdir(), "pump-crude-"));
-  await latestValue(SERIES.crude, dir, "crude");
-  const weeks = await readWeeks(join(dir, "crude.xls"));
-  return weeks.filter((row) => row.date >= since);
+  return pointsFrom(await fetchBook(SERIES.crude)).filter((row) => row.date >= since);
 }
 
 /** The latest published Gulf week, plus the latest crude-quality month. Not the grocery shelf. */
 export async function loadLatestWeek(): Promise<LatestWeek> {
-  const dir = await mkdtemp(join(tmpdir(), "pump-week-"));
-  const [crude, gasoline, diesel] = await Promise.all([
-    latestValue(SERIES.crude, dir, "crude"),
-    latestValue(SERIES.gasoline, dir, "gasoline"),
-    latestValue(SERIES.diesel, dir, "diesel"),
+  try {
+    return await loadLiveWeek();
+  } catch {
+    return SAVED_WEEK;
+  }
+}
+
+async function loadLiveWeek(): Promise<LatestWeek> {
+  const [crudeBook, gasolineBook, dieselBook] = await Promise.all([
+    fetchBook(SERIES.crude),
+    fetchBook(SERIES.gasoline),
+    fetchBook(SERIES.diesel),
   ]);
+  const crudeWeeks = pointsFrom(crudeBook);
+  const gasolineWeeks = pointsFrom(gasolineBook);
+  const dieselWeeks = pointsFrom(dieselBook);
+  const crude = crudeWeeks[crudeWeeks.length - 1];
+  const gasoline = gasolineWeeks[gasolineWeeks.length - 1];
+  const diesel = dieselWeeks[dieselWeeks.length - 1];
+  if (!crude || !gasoline || !diesel) throw new Error("empty workbook");
   const perGallon = crude.value / 42;
   let quality: LatestWeek["quality"] = null;
   try {
-    const response = await fetch(SERIES.quality, { headers: { "User-Agent": "pump-price" } });
-    if (response.ok) {
-      const path = join(dir, "quality.xls");
-      await writeFile(path, Buffer.from(await response.arrayBuffer()));
-      const { stdout } = await execFileAsync("python3", ["-c", READ_QUALITY, path], { timeout: 20000 });
-      quality = JSON.parse(stdout) as LatestWeek["quality"];
-    }
+    quality = qualityFrom(await fetchBook(SERIES.quality));
   } catch {
     quality = null;
   }
@@ -172,8 +174,8 @@ export async function loadLatestWeek(): Promise<LatestWeek> {
   let losAngelesGasoline: LatestWeek["losAngelesGasoline"] = null;
   try {
     const [losAngelesGas, losAngelesDiesel] = await Promise.all([
-      latestValue(SERIES.laGasoline, dir, "la-gasoline"),
-      latestValue(SERIES.laDiesel, dir, "la-diesel"),
+      latestValue(SERIES.laGasoline),
+      latestValue(SERIES.laDiesel),
     ]);
     losAngelesGasoline = losAngelesGas;
     californiaDock = {
@@ -187,12 +189,12 @@ export async function loadLatestWeek(): Promise<LatestWeek> {
   let newYorkGasoline: LatestWeek["newYorkGasoline"] = null;
   let newYorkDiesel: LatestWeek["newYorkDiesel"] = null;
   try {
-    newYorkGasoline = await latestValue(SERIES.newYorkGasoline, dir, "ny-gasoline");
+    newYorkGasoline = await latestValue(SERIES.newYorkGasoline);
   } catch {
     newYorkGasoline = null;
   }
   try {
-    newYorkDiesel = await latestValue(SERIES.newYorkDiesel, dir, "ny-diesel");
+    newYorkDiesel = await latestValue(SERIES.newYorkDiesel);
   } catch {
     newYorkDiesel = null;
   }
@@ -200,6 +202,7 @@ export async function loadLatestWeek(): Promise<LatestWeek> {
   try {
     const response = await fetch("https://www.ams.usda.gov/mnreports/ams_3616.pdf", { headers: { "User-Agent": "pump-price" } });
     if (response.ok) {
+      const dir = await mkdtemp(join(tmpdir(), "pump-ethanol-"));
       const path = join(dir, "ethanol.pdf");
       await writeFile(path, Buffer.from(await response.arrayBuffer()));
       const { stdout } = await execFileAsync("python3", ["-c", READ_ETHANOL, path], { timeout: 20000 });
@@ -213,10 +216,10 @@ export async function loadLatestWeek(): Promise<LatestWeek> {
   let refinery: LatestWeek["refinery"] = null;
   try {
     const [utilization, crudeInput, gasolineMade, distillateMade] = await Promise.all([
-      latestValue(SERIES.utilization, dir, "util"),
-      latestValue(SERIES.crudeInput, dir, "crude-in"),
-      latestValue(SERIES.gasolineMade, dir, "gas-made"),
-      latestValue(SERIES.distillateMade, dir, "dist-made"),
+      latestValue(SERIES.utilization),
+      latestValue(SERIES.crudeInput),
+      latestValue(SERIES.gasolineMade),
+      latestValue(SERIES.distillateMade),
     ]);
     const sameWeek = crudeInput.date === gasolineMade.date && crudeInput.date === distillateMade.date;
     refinery = {
@@ -231,11 +234,6 @@ export async function loadLatestWeek(): Promise<LatestWeek> {
   let lag: LatestWeek["lag"] = null;
   let importTravel: ImportTravel | null = null;
   try {
-    const [crudeWeeks, gasolineWeeks, dieselWeeks] = await Promise.all([
-      readWeeks(join(dir, "crude.xls")),
-      readWeeks(join(dir, "gasoline.xls")),
-      readWeeks(join(dir, "diesel.xls")),
-    ]);
     const gasolineLag = crackDaysBack(gasolineWeeks, crudeWeeks, 15, crude.value);
     const dieselLag = crackDaysBack(dieselWeeks, crudeWeeks, 19, crude.value);
     if (gasolineLag && dieselLag) lag = { gasoline: gasolineLag, diesel: dieselLag };

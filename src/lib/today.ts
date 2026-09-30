@@ -32,6 +32,8 @@ export type LatestWeek = {
     diesel: { date: string; crack: number };
   } | null;
   importTravel: ImportTravel | null;
+  /** True when the live files missed and this is the last week that did load. */
+  stale?: boolean;
 };
 
 export const pullLatestWeek = createServerFn({ method: "GET" }).handler(async (): Promise<LatestWeek> => {

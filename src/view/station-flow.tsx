@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { pullLatestWeek } from "../lib/today";
+import { SAVED_WEEK } from "../lib/saved-week";
 import { IOWA_ETHANOL } from "../model/state-invoice";
 import { PriceMap } from "./us-map";
 import { inputsFromWeek, type WeekInputs } from "./week-inputs";
@@ -24,11 +25,20 @@ export function StationFlow() {
         }
         setWeek(next);
         setNote(
-          `Week of ${next.week}. Gulf gasoline at the dock ${money(pulled.gasolineSpot)}, diesel ${money(pulled.dieselSpot)}.`,
+          pulled.stale
+            ? `The live file did not load. Showing the week of ${next.week}.`
+            : `Week of ${next.week}. Gulf gasoline at the dock ${money(pulled.gasolineSpot)}, diesel ${money(pulled.dieselSpot)}.`,
         );
       })
       .catch(() => {
-        if (live) setNote("The latest week did not load.");
+        if (!live) return;
+        const next = inputsFromWeek(SAVED_WEEK);
+        if (!next) {
+          setNote("The latest week did not load.");
+          return;
+        }
+        setWeek(next);
+        setNote(`The live file did not load. Showing the week of ${next.week}.`);
       });
     return () => {
       live = false;
