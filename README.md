@@ -2,19 +2,14 @@
 
 A [GrumpyTechBro](https://x.com/GrumpyTechBro) joint.
 
-A web calculator for gasoline, diesel, and a few consumer prices. Not a game. No score. You get god levers (countries, refineries, taxes, policies). The map is the 50 states, showing gasoline and diesel. Click a state for the rest of the basket.
+The calculator is this repository.
 
-Prices are supposed to come out of supply and demand for heavy and light, sour and sweet crude, fit to historical series. A hardcoded bump is a bug. A PADD average painted on a state and labeled as that state's price is the same bug.
+- Gas Prices: one invoice for gasoline and one for diesel, for each state and the District.
+- Gas Station Timing: the sign stays on the most expensive gallon in the tank until that gallon is sold.
+- Supply vs. Demand: supply tracks demand. The crude price does not.
+- Author's Note: what this was supposed to be, and what got dropped.
+- Receipts: the bibliography.
 
-## Read this first
-
-- [docs/MASTER-DESIGN.md](docs/MASTER-DESIGN.md): what the calculator is.
-- [docs/STATE-GRAIN.md](docs/STATE-GRAIN.md): which inputs exist by state, and which are allocated.
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): MVVM, tests, header, receipts rule.
-- [docs/RECEIPTS.md](docs/RECEIPTS.md): every source used, and which claims are still unverified.
-- [docs/BRIEFING.md](docs/BRIEFING.md): how we got here.
-- [docs/RECENTGOALS.md](docs/RECENTGOALS.md): what is in progress.
+The notes under [docs/](docs/) are the working papers. Where a paper and a page disagree, the page is the later one.
 
 Sibling habit, not a spec: [Hormuz Toll](https://github.com/twinforces/hormuzboardgame).
-
-There is no application code yet.
