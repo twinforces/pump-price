@@ -76,7 +76,7 @@ function withTravel(parts: Term[], state: string, travel: ImportTravel | null): 
   const dollars = travelFor(state, travel);
   if (dollars === null) return parts;
   if (parts.some((term) => term.label === "Import pricing lag")) return parts;
-  const refining = parts.findIndex((term) => term.label.startsWith("Refining"));
+  const refining = parts.findIndex((term) => term.label.startsWith("Refiner profit"));
   if (refining === -1) return parts;
   const next = parts.slice();
   const term = next[refining];
@@ -84,8 +84,105 @@ function withTravel(parts: Term[], state: string, travel: ImportTravel | null): 
   next.splice(refining, 0, flat("Import pricing lag", dollars));
   return next;
 }
+
+/** The federal credit sits inside the wholesale price. Naming it does not add it again. */
+function withCoupon(parts: Term[]): Term[] {
+  if (parts.some((term) => term.label === "Renewable fuel credit")) return parts;
+  const refining = parts.findIndex((term) => term.label.startsWith("Refiner profit"));
+  if (refining === -1) return parts;
+  const next = parts.slice();
+  const term = next[refining];
+  next[refining] = { ...term, constant: term.constant - RENEWABLE_FUEL_CREDIT };
+  next.splice(refining + 1, 0, flat("Renewable fuel credit", RENEWABLE_FUEL_CREDIT));
+  return next;
+}
+
+/** The plant's cost and its wearing out were inside the refining line. Naming them does not add them again. */
+function withPlant(parts: Term[]): Term[] {
+  if (parts.some((term) => term.label === "Running the refinery")) return parts;
+  const refining = parts.findIndex((term) => term.label.startsWith("Refiner profit"));
+  if (refining === -1) return parts;
+  const next = parts.slice();
+  const term = next[refining];
+  next[refining] = { ...term, constant: term.constant - REFINERY_CASH_COST - REFINERY_DEPRECIATION };
+  next.splice(
+    refining,
+    0,
+    flat("Running the refinery", REFINERY_CASH_COST),
+    flat("Refinery depreciation", REFINERY_DEPRECIATION),
+  );
+  return next;
+}
+
+/**
+ * Rail from the Midwest plant to the terminal, tenth of a gallon.
+ * 2013 rates: about 13 cents a gallon of ethanol to the East, 14 to the Gulf, about 20 to the West Coast.
+ * On the gasoline gallon that is 1 cent, or 2 cents in the West and California.
+ */
+export function ethanolFreight(state: string): number {
+  const region = regionOf(state).id;
+  return region === "west" || region === "california" ? 0.02 : 0.01;
+}
+
+function withEthanolFreight(parts: Term[], state: string): Term[] {
+  if (parts.some((term) => term.label === "Ethanol freight")) return parts;
+  const refining = parts.findIndex((term) => term.label.startsWith("Refiner profit"));
+  if (refining === -1) return parts;
+  const dollars = ethanolFreight(state);
+  const next = parts.slice();
+  const term = next[refining];
+  next[refining] = { ...term, constant: term.constant - dollars };
+  next.splice(refining, 0, flat("Ethanol freight", dollars));
+  return next;
+}
+function withCaliforniaRecipe(parts: Term[]): Term[] {
+  if (parts.some((term) => term.label === "California recipe")) return parts;
+  const refining = parts.findIndex((term) => term.label.startsWith("Refiner profit"));
+  if (refining === -1) return parts;
+  const next = parts.slice();
+  const term = next[refining];
+  next[refining] = { ...term, constant: term.constant - CALIFORNIA_RECIPE };
+  next.splice(refining, 0, flat("California recipe", CALIFORNIA_RECIPE));
+  return next;
+}
+
+/** Los Angeles gasoline minus Gulf gasoline, after California's crude is already its own line. */
+function withDockGap(parts: Term[], gap: number | null): Term[] {
+  if (gap === null || Math.round(gap * 100) === 0 || parts.some((term) => term.label === "Los Angeles over the Gulf")) return parts;
+  const refining = parts.findIndex((term) => term.label.startsWith("Refiner profit"));
+  if (refining === -1) return parts;
+  const next = parts.slice();
+  const term = next[refining];
+  next[refining] = { ...term, constant: term.constant - gap };
+  next.splice(refining, 0, flat("Los Angeles over the Gulf", gap));
+  return next;
+}
 const OREGON_CLEAN_FUELS = 0.0935;
 const WASHINGTON_CLEAN_FUEL = 0.0059;
+/**
+ * Renewable Fuel Standard credits, 2026.
+ * About 34 cents a gallon. US Oil & Gas Association, October 6, 2026.
+ * The Institute for Energy Research put the same stack near 37 cents in August 2026:
+ * a credit around $2.40 times a 15.5 percent obligation.
+ * It is not the ethanol in the gallon. It comes out of refining, so the pump does not change.
+ */
+export const RENEWABLE_FUEL_CREDIT = 0.34;
+/**
+ * Valero refining segment, second quarter 2026, per barrel of throughput.
+ * Cash operating cost $4.70, which is 11 cents a gallon. A year earlier it was $4.91.
+ * Depreciation $2.36, which is 6 cents a gallon.
+ * What they kept was $16.56 this quarter and $4.78 a year earlier, so that part is not a fixed line.
+ * Both come out of refining. The pump does not change.
+ */
+export const REFINERY_CASH_COST = 0.11;
+export const REFINERY_DEPRECIATION = 0.06;
+/**
+ * Extra cost of California's blend versus ordinary gasoline.
+ * Michael A. Mische, University of Southern California, May 5, 2025: 15 cents for the 2024 standard.
+ * The Air Resources Board's original range, from the refiners, was 5 to 15 cents.
+ * It is not the gap between Los Angeles and the Gulf. Gasoline only. It comes out of refining.
+ */
+export const CALIFORNIA_RECIPE = 0.15;
 /** California diesel sales tax, July 1, 2026 through June 30, 2027. Gasoline is 2.25 percent. District tax is extra. */
 const CALIFORNIA_DIESEL_SALES = 0.13;
 /** California diesel excise, July 1, 2026. Not the 92.94 cent bundle. */
@@ -189,27 +286,35 @@ export const ULSD_HYDROTREAT = 0.05;
  * The two lines add back to the old diesel refining line, so the pump does not move.
  */
 export function applyDieselMarketFactor(diesel: StateInvoice, gasoline: StateInvoice): StateInvoice {
-  const gas = gasoline.lines.find((line) => line.label.startsWith("Refining"));
-  const at = diesel.lines.findIndex((line) => line.label.startsWith("Refining"));
+  const gas = gasoline.lines.find((line) => line.label.startsWith("Refiner profit"));
+  const at = diesel.lines.findIndex((line) => line.label.startsWith("Refiner profit"));
   if (!gas || at < 0) return diesel;
   const current = diesel.lines[at];
-  const refiningCents = Math.round((gas.cents / 100 + ULSD_HYDROTREAT) * 100);
+  const refiningCents = Math.round(gas.cents);
+  const hydroCents = Math.round(ULSD_HYDROTREAT * 100);
   const refining: StateLine = {
     label: current.label,
-    constant: gas.constant + ULSD_HYDROTREAT,
+    constant: gas.constant,
     oil: gas.oil,
     diesel: gas.diesel,
     cents: refiningCents,
   };
+  const hydro: StateLine = {
+    label: "Hydrotreater",
+    constant: ULSD_HYDROTREAT,
+    oil: 0,
+    diesel: 0,
+    cents: hydroCents,
+  };
   const market: StateLine = {
     label: "Market factor",
-    constant: current.constant - refining.constant,
+    constant: current.constant - refining.constant - ULSD_HYDROTREAT,
     oil: current.oil - refining.oil,
     diesel: current.diesel - refining.diesel,
-    cents: current.cents - refiningCents,
+    cents: current.cents - refiningCents - hydroCents,
   };
   const lines = diesel.lines.slice();
-  lines.splice(at, 1, refining, market);
+  lines.splice(at, 1, refining, hydro, market);
   return { ...diesel, lines };
 }
 
@@ -323,9 +428,15 @@ function wholesaleTerm(parts: Term[]): Term {
         term.label === "Oil" ||
         term.label === "Oil replaced by ethanol" ||
         term.label === "Import pricing lag" ||
-        term.label.startsWith("Refining") ||
+        term.label.startsWith("Refiner profit") ||
+        term.label === "Running the refinery" ||
+        term.label === "Refinery depreciation" ||
+        term.label === "California recipe" ||
+        term.label === "Los Angeles over the Gulf" ||
         term.label.startsWith("Pipeline") ||
         term.label === "Ethanol, 10 percent" ||
+        term.label === "Ethanol freight" ||
+        term.label === "Renewable fuel credit" ||
         term.label === "Refiner's sale over the spot",
     ),
     "wholesale",
@@ -428,14 +539,17 @@ export function approximateStateInvoice(
   if (state === "California") {
     const latest = CALIFORNIA_MONTHS[CALIFORNIA_MONTHS.length - 1];
     return bill(
-      withTravel(
+      withDockGap(
+        withCaliforniaRecipe(
+          withEthanolFreight(
+            withCoupon(withPlant(withTravel(
         [
           crudeTerm(premium, 1),
           ...blend,
           ...(carryTransport ? [crudeTransportLine(posted, ethanolPerGallonKnown === null ? 1 : 1 - ETHANOL_SHARE)] : []),
           losAngelesCrack === null
-            ? fittedRefining("Refining, Los Angeles", REFINING_FIT.losAngelesGasoline, premium, null)
-            : observedCrack("Refining, Los Angeles", losAngelesCrack, crackAnchor, gulfBarrel, REFINING_FIT.losAngelesGasoline.oil, premium, null),
+            ? fittedRefining("Refiner profit, Los Angeles", REFINING_FIT.losAngelesGasoline, premium, null)
+            : observedCrack("Refiner profit, Los Angeles", losAngelesCrack, crackAnchor, gulfBarrel, REFINING_FIT.losAngelesGasoline.oil, premium, null),
           flat("Other distribution", californiaOtherDistribution()),
           flat("Detergent", DETERGENT),
           ...truckInvoiceLines(state),
@@ -452,6 +566,13 @@ export function approximateStateInvoice(
         state,
         importTravel,
       ),
+      ),
+      ),
+      state,
+      ),
+      ),
+      losAngelesCrack === null ? null : losAngelesCrack - gulfCrack,
+      ),
       gulfBarrel,
       dieselPerGallon,
       ["The Commission's distribution line already held a tanker, the card fee, and the dime of profit. The card fee and the dime are shown on their own. The tanker that was in that line is replaced by the three tanker lines.", TRUCK_SKETCH, ...unpublished],
@@ -462,20 +583,20 @@ export function approximateStateInvoice(
   const parts: Term[] = [crudeTerm(premium, 1), ...blend];
   if (carryTransport) parts.push(crudeTransportLine(posted, ethanolPerGallonKnown === null ? 1 : 1 - ETHANOL_SHARE));
   if (region.id === "gulf") {
-    parts.push(observedCrack("Refining, Gulf dock", gulfCrack, crackAnchor, gulfBarrel, REFINING_FIT.gulfGasoline.oil, premium, null));
+    parts.push(observedCrack("Refiner profit, Gulf dock", gulfCrack, crackAnchor, gulfBarrel, REFINING_FIT.gulfGasoline.oil, premium, null));
   } else if (region.id === "east") {
     if (newYorkCrack === null) unpublished.push("New York harbor did not price this week, so the East Coast dock is not a line.");
     else {
       const delivery = fromTheHarbor(state) ? harborDelivery(gulfCrack, laggedCrack) : { lines: [] as Term[], takenFromRefining: 0 };
       parts.push(...delivery.lines);
-      const crack = observedCrack("Refining, New York harbor", newYorkCrack, crackAnchor, gulfBarrel, REFINING_FIT.gulfGasoline.oil, premium, null);
+      const crack = observedCrack("Refiner profit, New York harbor", newYorkCrack, crackAnchor, gulfBarrel, REFINING_FIT.gulfGasoline.oil, premium, null);
       parts.push({ ...crack, constant: crack.constant - delivery.takenFromRefining });
     }
   } else if (state === "Washington" || state === "Oregon") {
-    parts.push(observedCrack("Refining, Puget Sound", gulfCrack, crackAnchor, gulfBarrel, REFINING_FIT.gulfGasoline.oil, premium, null));
+    parts.push(observedCrack("Refiner profit, Puget Sound", gulfCrack, crackAnchor, gulfBarrel, REFINING_FIT.gulfGasoline.oil, premium, null));
   } else {
     const crack = leftTheGulf(state) && laggedCrack !== null ? laggedCrack : gulfCrack;
-    parts.push(observedCrack("Refining", crack, crackAnchor, gulfBarrel, REFINING_FIT.gulfGasoline.oil, premium, null));
+    parts.push(observedCrack("Refiner profit", crack, crackAnchor, gulfBarrel, REFINING_FIT.gulfGasoline.oil, premium, null));
     if (leftTheGulf(state) && laggedCrack !== null) unpublished.push("No refinery in this state. Gasoline uses the Gulf crack from about 15 days earlier. The oil line is today's barrel, so this crack is set so the two together are the older dock.");
   }
 
@@ -502,7 +623,7 @@ export function approximateStateInvoice(
     flat("Federal tax", STATION.gasolineFederal),
     flat("State tax", stateTax(state, "gasoline")),
   );
-  const priced = withTravel(parts, state, importTravel);
+  const priced = withEthanolFreight(withCoupon(withPlant(withTravel(parts, state, importTravel))), state);
   const extra = knownOutsideTheStateTax(state, wholesaleTerm(priced));
   priced.push(...extra.lines);
   unpublished.push(...extra.notes);
@@ -533,24 +654,24 @@ export function approximateDieselInvoice(
   if (state === "California") {
     parts.push(
       losAngelesCrack === null
-        ? fittedRefining("Refining, Los Angeles", REFINING_FIT.losAngelesDiesel, 0, null)
-        : observedCrack("Refining, Los Angeles", losAngelesCrack, crackAnchor, gulfBarrel, REFINING_FIT.losAngelesDiesel.oil, 0, null),
+        ? fittedRefining("Refiner profit, Los Angeles", REFINING_FIT.losAngelesDiesel, 0, null)
+        : observedCrack("Refiner profit, Los Angeles", losAngelesCrack, crackAnchor, gulfBarrel, REFINING_FIT.losAngelesDiesel.oil, 0, null),
     );
   } else if (region.id === "gulf") {
-    parts.push(observedCrack("Refining, Gulf dock", gulfCrack, crackAnchor, gulfBarrel, REFINING_FIT.gulfDiesel.oil, 0, null));
+    parts.push(observedCrack("Refiner profit, Gulf dock", gulfCrack, crackAnchor, gulfBarrel, REFINING_FIT.gulfDiesel.oil, 0, null));
   } else if (region.id === "east") {
     if (newYorkCrack === null) unpublished.push("New York harbor diesel did not price this week, so the East Coast dock is not a line.");
     else {
       const delivery = fromTheHarbor(state) ? harborDelivery(gulfCrack, laggedCrack) : { lines: [] as Term[], takenFromRefining: 0 };
       parts.push(...delivery.lines);
-      const crack = observedCrack("Refining, New York harbor", newYorkCrack, crackAnchor, gulfBarrel, REFINING_FIT.gulfDiesel.oil, 0, null);
+      const crack = observedCrack("Refiner profit, New York harbor", newYorkCrack, crackAnchor, gulfBarrel, REFINING_FIT.gulfDiesel.oil, 0, null);
       parts.push({ ...crack, constant: crack.constant - delivery.takenFromRefining });
     }
   } else if (state === "Washington" || state === "Oregon") {
-    parts.push(observedCrack("Refining, Puget Sound", gulfCrack, crackAnchor, gulfBarrel, REFINING_FIT.gulfDiesel.oil, 0, null));
+    parts.push(observedCrack("Refiner profit, Puget Sound", gulfCrack, crackAnchor, gulfBarrel, REFINING_FIT.gulfDiesel.oil, 0, null));
   } else {
     const crack = leftTheGulf(state) && laggedCrack !== null ? laggedCrack : gulfCrack;
-    parts.push(observedCrack("Refining", crack, crackAnchor, gulfBarrel, REFINING_FIT.gulfDiesel.oil, 0, null));
+    parts.push(observedCrack("Refiner profit", crack, crackAnchor, gulfBarrel, REFINING_FIT.gulfDiesel.oil, 0, null));
     if (leftTheGulf(state) && laggedCrack !== null) unpublished.push("No refinery in this state. Diesel uses the Gulf crack from about 19 days earlier. The oil line is today's barrel, so this crack is set so the two together are the older dock.");
   }
 
@@ -569,7 +690,9 @@ export function approximateDieselInvoice(
 
   unpublished.push("Diesel at a regular station sells about half as fast, so the store, the building, and the profit are doubled. A truck stop is the other way around, and this bill is not one.");
   if (state === "California") parts.push(flat("Other distribution", californiaOtherDistribution()));
-  const traveled = withTravel(parts, state, importTravel);
+  const base = withCoupon(withPlant(withTravel(parts, state, importTravel)));
+  const traveled =
+    state === "California" ? withDockGap(base, losAngelesCrack === null ? null : losAngelesCrack - gulfCrack) : base;
   const station: Term[] = [
     ...truckInvoiceLines(state),
     flat("Card fees", 0),
@@ -607,14 +730,34 @@ export function unnamedVersusSurvey(totalCents: number, surveyPerGallon: number)
 /** Oil, ethanol, and refining. The bulk wholesale price. Not a second charge. */
 export function bulkWholesaleCents(lines: { label: string; cents: number }[]): number | null {
   const oil = lines.find((line) => line.label === "Oil");
-  const refining = lines.find((line) => line.label.startsWith("Refining"));
+  const refining = lines.find((line) => line.label.startsWith("Refiner profit"));
   if (!oil || !refining) return null;
   const ethanol = lines.find((line) => line.label === "Ethanol, 10 percent");
   const replaced = lines.find((line) => line.label === "Oil replaced by ethanol");
   const travel = lines.find((line) => line.label === "Import pricing lag");
   const transport = lines.find((line) => line.label === "Crude transport");
   const sale = lines.find((line) => line.label === "Refiner's sale over the spot");
-  return oil.cents + refining.cents + (ethanol?.cents ?? 0) + (replaced?.cents ?? 0) + (travel?.cents ?? 0) + (transport?.cents ?? 0) + (sale?.cents ?? 0);
+  const coupon = lines.find((line) => line.label === "Renewable fuel credit");
+  const cash = lines.find((line) => line.label === "Running the refinery");
+  const worn = lines.find((line) => line.label === "Refinery depreciation");
+  const recipe = lines.find((line) => line.label === "California recipe");
+  const freight = lines.find((line) => line.label === "Ethanol freight");
+  const angeles = lines.find((line) => line.label === "Los Angeles over the Gulf");
+  return (
+    oil.cents +
+    refining.cents +
+    (ethanol?.cents ?? 0) +
+    (replaced?.cents ?? 0) +
+    (travel?.cents ?? 0) +
+    (transport?.cents ?? 0) +
+    (sale?.cents ?? 0) +
+    (coupon?.cents ?? 0) +
+    (cash?.cents ?? 0) +
+    (worn?.cents ?? 0) +
+    (recipe?.cents ?? 0) +
+    (freight?.cents ?? 0) +
+    (angeles?.cents ?? 0)
+  );
 }
 
 /** American Petroleum Institute, May 5, 2026, citing the national Energy Information Administration split. About, not a law. */

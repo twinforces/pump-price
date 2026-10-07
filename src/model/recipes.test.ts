@@ -12,7 +12,7 @@ describe("recipes", () => {
   it("calls out California and does not turn the programs into a price", () => {
     const recipe = recipeFor("California");
     assert.equal(recipe.boilAndSeparate, false);
-    assert.match(recipe.lines.join(" "), /approximate invoice/);
+    assert.match(recipe.lines.join(" "), /reformulated gasoline/);
   });
 
   it("keeps Houston reformulated and the rest of Texas ordinary", () => {

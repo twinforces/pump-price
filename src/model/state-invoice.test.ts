@@ -13,6 +13,16 @@ function cents(invoice: { lines: { label: string; cents: number }[] } | null, la
   return line.cents;
 }
 
+function pulled(invoice: { lines: { label: string; cents: number }[] }): number {
+  const freight = invoice.lines.find((line) => line.label === "Ethanol freight");
+  return (
+    cents(invoice, "Renewable fuel credit") +
+    cents(invoice, "Running the refinery") +
+    cents(invoice, "Refinery depreciation") +
+    (freight?.cents ?? 0)
+  );
+}
+
 function has(invoice: { lines: { label: string }[] } | null, label: string): boolean {
   return Boolean(invoice?.lines.some((item) => item.label === label));
 }
@@ -25,8 +35,8 @@ describe("state invoice", () => {
     assert.equal(dear.lines.reduce((sum, line) => sum + line.cents, 0), dear.totalCents);
     assert.equal(has(dear, "Inferred, location"), false);
     assert.equal(cents(dear, "Oil") - cents(cheap, "Oil"), 100);
-    assert.equal(cents(dear, "Refining, Gulf dock"), 40);
-    const refiningDrop = 40 - cents(cheap, "Refining, Gulf dock");
+    assert.equal(cents(dear, "Refiner profit, Gulf dock") + pulled(dear), 40);
+    const refiningDrop = cents(dear, "Refiner profit, Gulf dock") - cents(cheap, "Refiner profit, Gulf dock");
     const cardDrop = cents(dear, "Card fees") - cents(cheap, "Card fees");
     assert.ok(refiningDrop > 25);
     assert.ok(Math.abs(dear.totalCents - cheap.totalCents - (100 + refiningDrop + cardDrop)) < 1e-6);
@@ -43,20 +53,20 @@ describe("state invoice", () => {
     const washington = approximateStateInvoice("Washington", 84, 0.4, null, 0.5, null);
     assert.ok(oregon && washington);
     assert.equal(oregon.lines.reduce((sum, line) => sum + line.cents, 0), oregon.totalCents);
-    assert.equal(has(oregon, "Refining, Gulf dock"), false);
+    assert.equal(has(oregon, "Refiner profit, Gulf dock"), false);
     assert.equal(has(oregon, "Refiner's sale over the spot"), false);
     assert.equal(cents(oregon, "Clean Fuels Program"), 9);
     assert.equal(has(oregon, "Crude transport"), false);
     assert.equal(has(washington, "Crude transport"), true);
     assert.equal(cents(oregon, "Oil"), cents(washington, "Oil") + cents(washington, "Crude transport"));
-    assert.equal(cents(oregon, "Refining, Puget Sound"), cents(washington, "Refining, Puget Sound"));
+    assert.equal(cents(oregon, "Refiner profit, Puget Sound"), cents(washington, "Refiner profit, Puget Sound"));
     assert.equal(has(oregon, "Clean Fuel Standard"), false);
   });
 
   it("prices New York harbor and the Linden pipe", () => {
     const york = approximateStateInvoice("New York", 84, 0.4, null, 0.5, null);
     assert.ok(york);
-    assert.equal(cents(york, "Refining, New York harbor") + cents(york, "Pipeline, Houston to Linden"), 50);
+    assert.equal(cents(york, "Refiner profit, New York harbor") + cents(york, "Pipeline, Houston to Linden") + pulled(york), 50);
     assert.equal(york.lines.reduce((sum, line) => sum + line.cents, 0), york.totalCents);
   });
 
@@ -65,7 +75,7 @@ describe("state invoice", () => {
     const york = approximateStateInvoice("New York", 84, 0.4, null, 0.5, null);
     assert.ok(mass && york);
     const harbor = (bill: NonNullable<typeof mass>) =>
-      cents(bill, "Refining, New York harbor") + cents(bill, "Pipeline, Houston to Linden") + (bill.lines.some((line) => line.label === "Pipeline travel lag") ? cents(bill, "Pipeline travel lag") : 0);
+      cents(bill, "Refiner profit, New York harbor") + cents(bill, "Pipeline, Houston to Linden") + pulled(bill) + (bill.lines.some((line) => line.label === "Pipeline travel lag") ? cents(bill, "Pipeline travel lag") : 0);
     assert.equal(harbor(mass), harbor(york));
     assert.equal(cents(mass, "Pipeline travel lag"), -15);
     for (const state of ["Connecticut", "Pennsylvania", "Florida"]) {
@@ -80,13 +90,27 @@ describe("state invoice", () => {
     const texas = approximateStateInvoice("Texas", 84, 0.4, null, null, null);
     assert.ok(colorado && texas);
     assert.ok(cents(colorado, "Oil") < cents(texas, "Oil"));
-    assert.equal(has(colorado, "Refining, Gulf dock"), false);
+    assert.equal(has(colorado, "Refiner profit, Gulf dock"), false);
+    assert.equal(cents(texas, "Ethanol freight"), 1);
+    assert.equal(cents(colorado, "Ethanol freight"), 1);
   });
 
   it("prices California from the fitted Los Angeles dock", () => {
     const california = approximateStateInvoice("California", 84, 0.4, null, null, null);
     assert.ok(california);
-    assert.equal(cents(california, "Refining, Los Angeles"), fitCents(84, REFINING_FIT.losAngelesGasoline));
+    assert.equal(cents(california, "Refiner profit, Los Angeles") + pulled(california) + cents(california, "California recipe"), fitCents(84, REFINING_FIT.losAngelesGasoline));
+    assert.equal(cents(california, "Ethanol freight"), 2);
+    const spotted = approximateStateInvoice("California", 98.07, 1.337, 2.021, null, null, 4, 98.07);
+    assert.ok(spotted);
+    assert.equal(cents(spotted, "Los Angeles over the Gulf"), 68);
+    assert.equal(
+      cents(spotted, "Refiner profit, Los Angeles") + cents(spotted, "Los Angeles over the Gulf") + cents(spotted, "California recipe") + pulled(spotted),
+      202,
+    );
+    assert.equal(has(approximateDieselInvoice("California", 84, 0.4, null, null), "Los Angeles over the Gulf"), false);
+    assert.equal(has(approximateDieselInvoice("California", 84, 0.4, null, null), "California recipe"), false);
+    const dieselAngeles = approximateDieselInvoice("California", 84, 0.4, 0.5, null);
+    assert.equal(cents(dieselAngeles, "Los Angeles over the Gulf"), 10);
     assert.equal(cents(california, "Tanker stop, $100 a trip"), 1.2);
     assert.equal(cents(california, "Tanker surcharge, diesel above $3, 33 miles each way"), 0.1);
     assert.equal(has(california, "Inferred, location"), false);
@@ -112,7 +136,7 @@ describe("state invoice", () => {
     assert.equal(cents(texas, "Oil replaced by ethanol"), -20);
     assert.equal(cents(texas, "Ethanol, 10 percent"), 16);
     assert.equal(
-      cents(texas, "Oil") + cents(texas, "Oil replaced by ethanol") + cents(texas, "Ethanol, 10 percent") + cents(texas, "Refining, Gulf dock"),
+      cents(texas, "Oil") + cents(texas, "Oil replaced by ethanol") + cents(texas, "Ethanol, 10 percent") + cents(texas, "Refiner profit, Gulf dock") + pulled(texas),
       236,
     );
     assert.equal(bulkWholesaleCents(texas.lines), 237);
@@ -125,7 +149,7 @@ describe("state invoice", () => {
     assert.equal(texas.lines.reduce((sum, line) => sum + line.cents, 0), texas.totalCents);
     assert.equal(has(texas, "Inferred, location"), false);
     assert.equal(cents(texas, "Oil"), 200);
-    assert.equal(cents(texas, "Refining, Gulf dock"), 50);
+    assert.equal(cents(texas, "Refiner profit, Gulf dock") + pulled(texas), 50);
     assert.equal(cents(texas, "Federal tax"), 24);
     assert.equal(cents(texas, "Station Profit"), 20);
     assert.equal(has(texas, "Detergent"), false);
@@ -134,19 +158,32 @@ describe("state invoice", () => {
     assert.equal(has(texas, "Ethanol, 10 percent"), false);
     const cheaper = approximateDieselInvoice("Texas", 42, 0.5, null, null, 4, 84);
     const dearDiesel = approximateDieselInvoice("Texas", 84, 0.5, null, null, 4, 84);
-    const dieselDrop = cents(dearDiesel, "Refining, Gulf dock") - cents(cheaper, "Refining, Gulf dock");
+    const dieselDrop = cents(dearDiesel, "Refiner profit, Gulf dock") - cents(cheaper, "Refiner profit, Gulf dock");
     const cardDrop = cents(dearDiesel, "Card fees") - cents(cheaper, "Card fees");
     assert.ok(dieselDrop > 40);
     assert.ok(Math.abs(dearDiesel.totalCents - cheaper.totalCents - (100 + dieselDrop + cardDrop)) < 1e-6);
     const oregon = approximateDieselInvoice("Oregon", 84, 0.5, null, null);
     const washingtonDiesel = approximateDieselInvoice("Washington", 84, 0.5, null, null);
     assert.equal(has(oregon, "Clean Fuels Program"), false);
-    assert.equal(has(oregon, "Refining, Gulf dock"), false);
+    assert.equal(has(oregon, "Refiner profit, Gulf dock"), false);
     assert.equal(has(oregon, "Crude transport"), false);
     assert.equal(cents(oregon, "Oil"), cents(washingtonDiesel, "Oil") + cents(washingtonDiesel, "Crude transport"));
-    assert.equal(cents(oregon, "Refining, Puget Sound"), cents(washingtonDiesel, "Refining, Puget Sound"));
+    assert.equal(cents(oregon, "Refiner profit, Puget Sound"), cents(washingtonDiesel, "Refiner profit, Puget Sound"));
     const newYork = approximateDieselInvoice("New York", 84, 0.5, null, 0.6);
-    assert.equal(cents(newYork, "Refining, New York harbor") + cents(newYork, "Pipeline, Houston to Linden"), 60);
+    assert.equal(cents(newYork, "Refiner profit, New York harbor") + cents(newYork, "Pipeline, Houston to Linden") + pulled(newYork), 60);
+  });
+
+  it("names the renewable fuel credit and does not charge it twice", () => {
+    const texas = approximateStateInvoice("Texas", 84, 0.4, null, null, null);
+    const california = approximateStateInvoice("California", 84, 0.4, 0.5, null, 1.5);
+    const diesel = approximateDieselInvoice("Oregon", 84, 0.5, null, null);
+    assert.ok(texas);
+    assert.ok(california);
+    assert.equal(cents(texas, "Renewable fuel credit"), 34);
+    assert.equal(cents(texas, "Running the refinery"), 11);
+    assert.equal(cents(texas, "Refinery depreciation"), 6);
+    assert.equal(cents(california, "Renewable fuel credit"), 34);
+    assert.equal(cents(diesel, "Renewable fuel credit"), 34);
   });
 
   it("sets diesel refining to gasoline refining plus the hydrotreater", () => {
@@ -154,8 +191,13 @@ describe("state invoice", () => {
     const diesel = approximateDieselInvoice("Texas", 84, 0.9, null, null);
     assert.ok(gasoline);
     const split = applyDieselMarketFactor(diesel, gasoline);
-    assert.equal(cents(split, "Refining, Gulf dock"), cents(gasoline, "Refining, Gulf dock") + 5);
-    assert.equal(cents(split, "Refining, Gulf dock") + cents(split, "Market factor"), cents(diesel, "Refining, Gulf dock"));
+    assert.equal(cents(split, "Refiner profit, Gulf dock"), cents(gasoline, "Refiner profit, Gulf dock"));
+    assert.equal(cents(split, "Hydrotreater"), 5);
+    assert.equal(has(split, "Ethanol freight"), false);
+    assert.equal(
+      cents(split, "Refiner profit, Gulf dock") + cents(split, "Hydrotreater") + cents(split, "Market factor"),
+      cents(diesel, "Refiner profit, Gulf dock"),
+    );
     assert.equal(split.lines.reduce((sum, line) => sum + line.cents, 0), diesel.totalCents);
     assert.equal(split.totalCents, diesel.totalCents);
   });
@@ -180,11 +222,11 @@ describe("state invoice", () => {
     const connecticut = approximateStateInvoice("Connecticut", 84, 0.4, null, 0.5, null);
     assert.ok(connecticut);
     const dock =
-      (cents(connecticut, "Oil") + cents(connecticut, "Refining, New York harbor") + cents(connecticut, "Pipeline, Houston to Linden")) / 100;
+      (cents(connecticut, "Oil") + cents(connecticut, "Refiner profit, New York harbor") + cents(connecticut, "Pipeline, Houston to Linden") + pulled(connecticut)) / 100;
     assert.equal(cents(connecticut, "Gross earnings tax, first sale"), Math.round(dock * 0.081 * 100));
     assert.equal(has(connecticut, "Underground tank fee"), false);
     const ohio = approximateDieselInvoice("Ohio", 84, 0.5, null, null);
-    const oil = (cents(ohio, "Oil") + cents(ohio, "Refining")) / 100;
+    const oil = (cents(ohio, "Oil") + cents(ohio, "Refiner profit") + pulled(ohio)) / 100;
     assert.equal(cents(ohio, "Petroleum activity tax"), Math.round(oil * 0.0065 * 100));
     const york = approximateStateInvoice("New York", 84, 0.4, null, 0.5, null);
     assert.equal(cents(york, "State sales tax"), 8);
@@ -280,10 +322,10 @@ describe("state invoice", () => {
     const texas = approximateStateInvoice("Texas", 103.54, 1.423, null, null, null, 4, 103.54, 1.2);
     const idaho = approximateStateInvoice("Idaho", 103.54, 1.423, null, null, null, 4, 103.54, 1.2);
     const york = approximateStateInvoice("New York", 103.54, 1.423, null, 0.99, null, 4, 103.54, 1.2);
-    assert.equal(cents(texas, "Refining, Gulf dock"), 142);
-    assert.equal(cents(idaho, "Refining"), 120);
+    assert.equal(cents(texas, "Refiner profit, Gulf dock") + pulled(texas), 142);
+    assert.equal(cents(idaho, "Refiner profit") + pulled(idaho), 120);
     assert.equal(
-      cents(york, "Refining, New York harbor") + cents(york, "Pipeline, Houston to Linden") + cents(york, "Pipeline travel lag"),
+      cents(york, "Refiner profit, New York harbor") + cents(york, "Pipeline, Houston to Linden") + cents(york, "Pipeline travel lag") + pulled(york),
       99,
     );
     const oregon = approximateStateInvoice("Oregon", 103.54, 1.423, null, null, null, 4, 103.54, 1.2);
@@ -320,7 +362,7 @@ describe("state invoice", () => {
     const moved = approximateStateInvoice("California", 103.54, 1.42, 1.6, null, null, 4, null, null, travel);
     assert.ok(plain && moved);
     assert.equal(moved.totalCents, plain.totalCents);
-    assert.ok(cents(moved, "Refining, Los Angeles") > cents(plain, "Refining, Los Angeles"));
+    assert.ok(cents(moved, "Refiner profit, Los Angeles") > cents(plain, "Refiner profit, Los Angeles"));
     const texasPlain = approximateStateInvoice("Texas", 103.54, 1.42, null, null, null, 4);
     const texas = approximateStateInvoice("Texas", 103.54, 1.42, null, null, null, 4, null, null, travel);
     assert.ok(texasPlain && texas);
@@ -339,7 +381,7 @@ describe("state invoice", () => {
     assert.ok(oregon && washingtonAtSameBarrel);
     assert.ok(Number.isFinite(cents(washington, "Import pricing lag")));
     assert.equal(cents(oregon, "Import pricing lag"), cents(washington, "Import pricing lag"));
-    assert.equal(cents(oregon, "Refining, Puget Sound"), cents(washingtonAtSameBarrel, "Refining, Puget Sound"));
+    assert.equal(cents(oregon, "Refiner profit, Puget Sound"), cents(washingtonAtSameBarrel, "Refiner profit, Puget Sound"));
     assert.equal(cents(oregon, "Clean Fuels Program"), 9);
     assert.ok(oregon.lines.every((line) => Number.isFinite(line.cents)));
   });

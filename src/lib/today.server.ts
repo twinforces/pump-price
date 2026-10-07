@@ -150,7 +150,7 @@ export async function loadLatestWeek(): Promise<LatestWeek> {
   }
 }
 
-async function loadLiveWeek(): Promise<LatestWeek> {
+export async function loadLiveWeek(): Promise<LatestWeek> {
   const [crudeBook, gasolineBook, dieselBook] = await Promise.all([
     fetchBook(SERIES.crude),
     fetchBook(SERIES.gasoline),

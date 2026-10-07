@@ -1,0 +1,59 @@
+{
+  "week": "2026-10-02",
+  "crude": 98.07,
+  "gasolineSpot": 3.672,
+  "dieselSpot": 4.731,
+  "gasolineCrack": 1.3370000000000002,
+  "dieselCrack": 2.396,
+  "quality": {
+    "month": "2026-07-15",
+    "sulfur": 1.24,
+    "api": 33.71
+  },
+  "californiaDock": {
+    "gasoline": 0.7659999999999996,
+    "diesel": 0.13900000000000023
+  },
+  "losAngelesGasoline": {
+    "date": "2026-10-02",
+    "value": 4.438
+  },
+  "newYorkGasoline": {
+    "date": "2026-10-02",
+    "value": 3.433
+  },
+  "newYorkDiesel": {
+    "date": "2026-10-02",
+    "value": 4.871
+  },
+  "ethanol": {
+    "date": "USDA weekly",
+    "dollarsPerGallon": 2.07
+  },
+  "refinery": {
+    "week": "2026-10-02",
+    "utilization": 92.7,
+    "gasolineShare": 0.5672936893203884,
+    "distillateShare": 0.32099514563106796
+  },
+  "lag": {
+    "gasoline": {
+      "date": "2026-09-18",
+      "crack": 1.553
+    },
+    "diesel": {
+      "date": "2026-09-11",
+      "crack": 2.5469999999999997
+    }
+  },
+  "importTravel": {
+    "california": -0.05235722388128804,
+    "washington": -0.10191555230790326,
+    "east": 0.0010874093788713227,
+    "midwest": 0.0907090258013356,
+    "gulf": -0.008446303222762661,
+    "rockies": -0.04720910535902821,
+    "alaska": 0,
+    "hawaii": -0.08595276099266522
+  }
+}

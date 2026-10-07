@@ -78,6 +78,27 @@ function Receipts() {
           <Item href="https://www.ams.usda.gov/mnreports/ams_3616.pdf">
             U.S. Department of Agriculture, Agricultural Marketing Service. Iowa ethanol plant prices, weekly.
           </Item>
+          <Item href="https://dr.lib.iastate.edu/bitstreams/554eee50-ac2f-4e5f-9782-ab1b281fd475/download">
+            Iowa State University. Ethanol rail rates, 2013. About 13 cents a gallon of ethanol to New York, 14 to Houston, 19 to 25 to Los Angeles.
+          </Item>
+          <Item href="https://www.instituteforenergyresearch.org/wp-content/uploads/2026/08/RFS-Policy-Brief-IER-2026.pdf">
+            Institute for Energy Research, August 2026. The Renewable Fuel Standard credit, about 37 cents a gallon at a credit near $2.40.
+          </Item>
+          <Item href="https://www.eia.gov/todayinenergy/detail.php?id=67765">
+            Energy Information Administration, June 10, 2026. Higher blending targets and the price of the credits.
+          </Item>
+          <Item href="https://x.com/US_OGA/status/2107604987652300892">
+            US Oil and Gas Association, October 6, 2026. The credit at about 34 cents a gallon, against July 2008.
+          </Item>
+          <Item href="https://investorvalero.com/financials/">
+            Valero, second quarter 2026. Refining cash cost $4.70 a barrel of throughput, depreciation $2.36, operating income $16.56.
+          </Item>
+          <Item href="https://files.constantcontact.com/6ddc9aab901/d3ac27a3-d4d4-44f3-9a3b-f91f88735d11.pdf">
+            Michael A. Mische, University of Southern California, May 5, 2025. California's blend at 15 cents a gallon for the 2024 standard. An advocacy paper. Cap and trade and the low-carbon standard are separate lines in that paper.
+          </Item>
+          <Item href="https://ww2.arb.ca.gov/sites/default/files/classic/isd/fuels/gasoline/pub/cbgbkgr2.pdf">
+            California Air Resources Board. Cleaner-burning gasoline costs 5 to 15 cents more a gallon to produce, from the refiners, when the rule was new.
+          </Item>
           <Item href="https://www.epa.gov/gasoline-standards">
             Environmental Protection Agency. Gasoline standards, including which cities require reformulated gasoline.
           </Item>

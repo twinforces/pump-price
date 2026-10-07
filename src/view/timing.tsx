@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { pullCrudeWeeks, pullLatestWeek, type LatestWeek } from "../lib/today";
+import { pullCrudeWeeks } from "../lib/today";
 import { SAVED_WEEK } from "../lib/saved-week";
 import { epicFuryPlay } from "../model/epic";
 import { DELAY } from "../model/identity";
@@ -8,6 +8,8 @@ import { IOWA_ETHANOL, approximateDieselInvoice, approximateStateInvoice } from 
 import { STATE_TAXES } from "../model/states";
 import { crudeLagDays, productLagDays } from "../model/voyage";
 import { inputsFromWeek, type WeekInputs } from "./week-inputs";
+
+const OPENING = inputsFromWeek(SAVED_WEEK);
 
 const SPEEDS = [0.5, 1, 2, 7] as const;
 const TRAIL = 28;
@@ -99,10 +101,14 @@ function dieselPump(name: string, barrel: number, week: WeekInputs): number | nu
 export function Timing() {
   const names = states();
   const [name, setName] = useState("Oregon");
-  const [week, setWeek] = useState<WeekInputs | null>(null);
-  const [note, setNote] = useState("Loading the latest week.");
-  const [barrel, setBarrel] = useState(70);
-  const [history, setHistory] = useState<number[]>(() => Array(HISTORY).fill(70));
+  const [week, setWeek] = useState<WeekInputs | null>(OPENING);
+  const [note, setNote] = useState(
+    OPENING
+      ? `Clock is frozen on the dock week of ${OPENING.week}. Move the barrel and it starts.`
+      : "The Wednesday snapshot did not load.",
+  );
+  const [barrel, setBarrel] = useState(OPENING?.crude ?? 70);
+  const [history, setHistory] = useState<number[]>(() => Array(HISTORY).fill(OPENING?.crude ?? 70));
   const [running, setRunning] = useState(false);
   const [speed, setSpeed] = useState<(typeof SPEEDS)[number]>(1);
   const [day, setDay] = useState(0);
@@ -121,48 +127,6 @@ export function Timing() {
   historyRef.current = history;
   weekRef.current = week;
   nameRef.current = name;
-
-  useEffect(() => {
-    let live = true;
-
-    function takeWeek(pulled: LatestWeek) {
-      const next = inputsFromWeek(pulled);
-      if (!next) {
-        setNote("The latest week did not load.");
-        return;
-      }
-      const seeded = Array(HISTORY).fill(next.crude);
-      setWeek(next);
-      setBarrel(next.crude);
-      setHistory(seeded);
-      historyRef.current = seeded;
-      barrelRef.current = next.crude;
-      setRunning(false);
-      setDay(0);
-      const flat = invoicePump("Oregon", next.crude, next) ?? 0;
-      const dieselFlat = dieselPump("Oregon", next.crude, next) ?? 0;
-      setPumpTrail(Array(TRAIL).fill(flat));
-      setAverageTrail(Array(TRAIL).fill(flat));
-      setDieselPumpTrail(Array(TRAIL).fill(dieselFlat));
-      setDieselAverageTrail(Array(TRAIL).fill(dieselFlat));
-      setNote(
-        pulled.stale
-          ? `The live file did not load. Showing the week of ${next.week}. Move the barrel and it starts.`
-          : `Clock is frozen on the week of ${next.week}. Move the barrel and it starts.`,
-      );
-    }
-
-    void pullLatestWeek()
-      .then((pulled) => {
-        if (live) takeWeek(pulled);
-      })
-      .catch(() => {
-        if (live) takeWeek(SAVED_WEEK);
-      });
-    return () => {
-      live = false;
-    };
-  }, []);
 
   useEffect(() => {
     if (!week) return;

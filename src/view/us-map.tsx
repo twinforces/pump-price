@@ -44,7 +44,7 @@ function defineLine(label: string, state = ""): string {
   if (label === "Oil replaced by ethanol") return "Ten percent of a gasoline gallon is not crude. This takes that tenth off. A higher barrel makes this credit larger.";
   if (label === "Import pricing lag") {
     const diet = voyageFor(state);
-    const rest = " Negative means that crude cost less than this week's barrel. Refining is what remains of the wholesale price.";
+    const rest = " Negative means that crude cost less than this week's barrel.";
     if (diet === "washington") return "Washington has no crude of its own. Alaska comes by ship, Canada by pipe, and Bakken by rail. Oregon's fuel is refined there, so it takes the same trip. This is that mix minus this week's barrel." + rest;
     if (diet === "east") return "These plants run foreign crude. West Africa is about two weeks. The Middle East is about a month. A little was already in Appalachia, and a little came up from the Gulf." + rest;
     if (diet === "midwest") return "Most of this crude is Canadian, about two weeks in the pipe. The rest was already in the Midwest." + rest;
@@ -55,17 +55,24 @@ function defineLine(label: string, state = ""): string {
     return "California's own wells are already there. The rest is Alaska by ship, Canada by pipe, and Atlantic barrels through Panama. This is that mix minus this week's barrel." + rest;
   }
   if (label === "Ethanol, 10 percent") return "What the ethanol costs. Ten percent of the gallon, at the Iowa plant price. It does not follow the barrel.";
-  if (label === "Pipeline, Houston to Linden") return "Colonial, from Houston to Greensboro, then the smaller line to Linden, at New York Harbor. Gasoline takes 14 days and 16 hours. Diesel takes about 19 days. This comes out of refining. The wholesale price does not change.";
-  if (label === "Pipeline travel lag") return "The Gulf price moved while that batch was in the pipe. Negative means the batch was cheaper than this week's Gulf price. This comes out of refining. The wholesale price does not change.";
-  if (label.startsWith("Pipeline")) return "A filed pipeline rate for a named place. It comes out of refining. It is not the tanker to the station.";
-  if (label === "Crude transport") return "The extra these refiners paid for a gallon of crude over the Gulf barrel. The pipe and the ship are in that, and so is the kind of crude. It is not a filed freight rate. It came out of the oil line.";
-  if (label === "Refining, Puget Sound") return "The charge at the Puget Sound refineries. Oregon pays the same line. It leans with the barrel. The tanker to the station is a separate line.";
-  if (label === "Market factor") return "Diesel's wholesale, minus gasoline's refining, minus 5 cents. The 5 cents is a rebuilt hydrotreater taking sulfur down to 15 parts per million. The Energy Information Administration priced that at about 5 cents. The rest is buyers paying more for a scarce fuel. It is not harder work.";
-  if (label.startsWith("Refining")) return "The charge to turn crude into this fuel, after the lags and the pipe are taken out. On diesel this is gasoline's refining plus 5 cents for the hydrotreater. It leans with the barrel and does not lock to it. Where the state has no refinery, gasoline uses the Gulf crack from about 15 days earlier and diesel from about 19. The tanker to the station is a separate line.";
-  if (label === "Wholesale") return "Oil, crude transport, the ethanol, the import pricing lag, the pipe, refining, and on diesel the market factor. The price of the fuel before the tanker and the tax.";
-  if (label === "Clean Fuels Program") return "Oregon's cleaner-gasoline standard. Taken out of the wholesale price and added back on its own line.";
+  if (label === "Ethanol freight") return "Rail from the Midwest plant to the terminal. A 2013 study put that at about 13 cents a gallon of ethanol to the East, 14 to the Gulf, and about 20 to the West Coast. This gallon is one tenth ethanol, so that is 1 cent, or 2 cents in the West and California.";
+  if (label === "Renewable fuel credit") return "The federal credit a refiner turns in under the Renewable Fuel Standard. About 34 cents a gallon in 2026. It is not the ethanol in the tank.";
+  if (label === "Pipeline, Houston to Linden") return "Colonial, from Houston to Greensboro, then the smaller line to Linden, at New York Harbor. Gasoline takes 14 days and 16 hours. Diesel takes about 19 days.";
+  if (label === "Pipeline travel lag") return "The Gulf price moved while that batch was in the pipe. Negative means the batch was cheaper than this week's Gulf price.";
+  if (label.startsWith("Pipeline")) return "A filed pipeline rate for a named place. It is not the tanker to the station.";
+  if (label === "Crude transport") return "The extra these refiners paid for a gallon of crude over the Gulf barrel. The pipe and the ship are in that, and so is the kind of crude. It is not a filed freight rate.";
+  if (label === "Running the refinery") return "What it costs to run the plant, not what the refiner keeps. Valero, second quarter 2026: $4.70 a barrel of throughput, 11 cents a gallon. A year earlier it was $4.91.";
+  if (label === "Refinery depreciation") return "The plant wearing out. Valero, second quarter 2026: $2.36 a barrel, 6 cents a gallon. This is an accounting charge, not cash paid for this gallon.";
+  if (label === "California recipe") return "The extra cost of California's blend. Michael Mische, University of Southern California, May 2025: 15 cents for the 2024 standard. The Air Resources Board's original range was 5 to 15 cents. Gasoline only.";
+  if (label === "Los Angeles over the Gulf") return "Los Angeles this week minus the Gulf, after the extra paid for California crude.";
+  if (label === "Refiner profit, Puget Sound") return "What the Puget Sound refineries keep after the costs on this bill. Oregon is the same number.";
+  if (label === "Market factor") return "What buyers pay for diesel above gasoline's profit and the hydrotreater.";
+  if (label === "Hydrotreater") return "Taking sulfur out of diesel, down to 15 parts per million. The Energy Information Administration priced a rebuilt unit at about 5 cents a gallon. A new unit was about 6.";
+  if (label.startsWith("Refiner profit")) return "What is left after the costs on this bill. On diesel, the same profit as gasoline.";
+  if (label === "Wholesale") return "The bulk price, before the tanker and the tax. A branded station does not necessarily pay this. The brand sets that price, and it can differ by neighborhood.";
+  if (label === "Clean Fuels Program") return "Oregon's cleaner-gasoline standard. 9.35 cents a gallon of gasoline with 10 percent ethanol.";
   if (label === "Clean Fuel Standard") return "Washington's cleaner-fuel standard, in cents per gallon.";
-  if (label === "Other distribution") return "What remains of California's published distribution bucket after the tanker, the card fee, the store, the building, and the station profit are on their own lines. California published that bucket for gasoline only. Diesel uses the same leftover. The state did not publish a diesel series. It is not the tanker.";
+  if (label === "Other distribution") return "California's distribution costs besides the tanker, the card fee, the store, the building, and the station profit. Diesel uses the same figure. The state did not publish a diesel series.";
   if (label === "Refiner's sale over the spot") return "One cent a Gulf refiner charged over the spot price, through March 2022. Carried forward.";
   if (label.startsWith("Tanker stop")) return "The delivery stop, spread over the gallons in the tanker.";
   if (label.startsWith("Tanker contract")) return "The agreed haul from the wholesale terminal to the station, priced as if diesel were $3 a gallon.";
@@ -84,7 +91,7 @@ function defineLine(label: string, state = ""): string {
   if (/tax/i.test(label)) return "A tax that is not inside the main state tax line.";
   if (label === "Price@Pump") return "Every line on this bill, added up.";
   if (label.startsWith("Station survey")) return "What stations in this state were charging on the survey date.";
-  if (label === "Theory vs. Reality") return "This bill minus the station survey. A few cents is a normal station margin.";
+  if (label === "Theory vs. Reality") return "The station survey minus this bill. Negative means the sign is below the bill. A station will do that to get people into the store.";
   if (label === "Barrel that matches the survey") return "The oil price that would make this bill equal the survey. If it is a recent barrel, the gap is lag. If it is nowhere near a real barrel, the bill is missing a cost.";
   return "";
 }
@@ -329,8 +336,15 @@ function PairedBill({
     label === "Import pricing lag" ||
     label === "Crude transport" ||
     label === "Ethanol, 10 percent" ||
+    label === "Ethanol freight" ||
+    label === "Renewable fuel credit" ||
+    label === "Running the refinery" ||
+    label === "Refinery depreciation" ||
+    label === "California recipe" ||
+    label === "Los Angeles over the Gulf" ||
+    label === "Hydrotreater" ||
     label === "Refiner's sale over the spot" ||
-    label.startsWith("Refining") ||
+    label.startsWith("Refiner profit") ||
     label === "Market factor" ||
     label.startsWith("Pipeline");
   const sumWholesale = (lines: { label: string; cents: number }[]) =>

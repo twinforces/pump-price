@@ -47,7 +47,6 @@ const NAMED: Record<string, Recipe> = {
     boilAndSeparate: false,
     lines: [
       "Not boil and separate. California reformulated gasoline, statewide.",
-      "Cap and trade and the low-carbon standard are lines on the approximate invoice.",
     ],
   },
   Arizona: {
