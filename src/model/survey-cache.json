@@ -1,262 +1,262 @@
 {
-  "asOf": "October 21, 2026",
+  "asOf": "October 28, 2026",
   "gasoline": [
     {
       "state": "Alabama",
-      "regular": 3.8786
+      "regular": 3.7895
     },
     {
       "state": "Alaska",
-      "regular": 4.897
+      "regular": 4.8236
     },
     {
       "state": "Arizona",
-      "regular": 4.5787
+      "regular": 4.4852
     },
     {
       "state": "Arkansas",
-      "regular": 3.8901
+      "regular": 3.8226
     },
     {
       "state": "California",
-      "regular": 6.1139
+      "regular": 5.9706
     },
     {
       "state": "Colorado",
-      "regular": 4.2957
+      "regular": 4.4016
     },
     {
       "state": "Connecticut",
-      "regular": 4.3348
+      "regular": 4.2824
     },
     {
       "state": "Delaware",
-      "regular": 3.9865
+      "regular": 3.967
     },
     {
       "state": "District of Columbia",
-      "regular": 4.4002
+      "regular": 4.3225
     },
     {
       "state": "Florida",
-      "regular": 4.0197
+      "regular": 4.0092
     },
     {
       "state": "Georgia",
-      "regular": 3.7157
+      "regular": 3.6302
     },
     {
       "state": "Hawaii",
-      "regular": 5.6265
+      "regular": 5.6639
     },
     {
       "state": "Idaho",
-      "regular": 4.7701
+      "regular": 4.6312
     },
     {
       "state": "Illinois",
-      "regular": 4.645
+      "regular": 4.8208
     },
     {
       "state": "Indiana",
-      "regular": 3.7995
+      "regular": 3.9176
     },
     {
       "state": "Iowa",
-      "regular": 4.1265
+      "regular": 4.1398
     },
     {
       "state": "Kansas",
-      "regular": 3.9788
+      "regular": 3.9512
     },
     {
       "state": "Kentucky",
-      "regular": 3.9035
+      "regular": 3.979
     },
     {
       "state": "Louisiana",
-      "regular": 3.8461
+      "regular": 3.7608
     },
     {
       "state": "Maine",
-      "regular": 4.3292
+      "regular": 4.2867
     },
     {
       "state": "Maryland",
-      "regular": 4.0683
+      "regular": 4.0299
     },
     {
       "state": "Massachusetts",
-      "regular": 4.2535
+      "regular": 4.2095
     },
     {
       "state": "Michigan",
-      "regular": 4.4356
+      "regular": 4.7133
     },
     {
       "state": "Minnesota",
-      "regular": 4.23
+      "regular": 4.1704
     },
     {
       "state": "Mississippi",
-      "regular": 3.8786
+      "regular": 3.8196
     },
     {
       "state": "Missouri",
-      "regular": 3.9567
+      "regular": 3.9092
     },
     {
       "state": "Montana",
-      "regular": 4.4486
+      "regular": 4.3784
     },
     {
       "state": "Nebraska",
-      "regular": 4.3619
+      "regular": 4.2933
     },
     {
       "state": "Nevada",
-      "regular": 5.3669
+      "regular": 5.2743
     },
     {
       "state": "New Hampshire",
-      "regular": 4.2412
+      "regular": 4.197
     },
     {
       "state": "New Jersey",
-      "regular": 4.2194
+      "regular": 4.1626
     },
     {
       "state": "New Mexico",
-      "regular": 4.3103
+      "regular": 4.1536
     },
     {
       "state": "New York",
-      "regular": 4.4075
+      "regular": 4.3716
     },
     {
       "state": "North Carolina",
-      "regular": 3.5712
+      "regular": 3.4494
     },
     {
       "state": "North Dakota",
-      "regular": 4.1373
+      "regular": 4.0988
     },
     {
       "state": "Ohio",
-      "regular": 3.9789
+      "regular": 4.3162
     },
     {
       "state": "Oklahoma",
-      "regular": 3.9373
+      "regular": 3.9193
     },
     {
       "state": "Oregon",
-      "regular": 4.9177
+      "regular": 4.848
     },
     {
       "state": "Pennsylvania",
-      "regular": 4.4872
+      "regular": 4.4576
     },
     {
       "state": "Rhode Island",
-      "regular": 4.2047
+      "regular": 4.1348
     },
     {
       "state": "South Carolina",
-      "regular": 3.8334
+      "regular": 3.7372
     },
     {
       "state": "South Dakota",
-      "regular": 4.2472
+      "regular": 4.2121
     },
     {
       "state": "Tennessee",
-      "regular": 3.8165
+      "regular": 3.7821
     },
     {
       "state": "Texas",
-      "regular": 3.7642
+      "regular": 3.7141
     },
     {
       "state": "Utah",
-      "regular": 4.7534
+      "regular": 4.6439
     },
     {
       "state": "Vermont",
-      "regular": 4.3776
+      "regular": 4.3446
     },
     {
       "state": "Virginia",
-      "regular": 4.1135
+      "regular": 4.0142
     },
     {
       "state": "Washington",
-      "regular": 5.357
+      "regular": 5.2696
     },
     {
       "state": "West Virginia",
-      "regular": 4.2271
+      "regular": 4.1971
     },
     {
       "state": "Wisconsin",
-      "regular": 4.1553
+      "regular": 4.4257
     },
     {
       "state": "Wyoming",
-      "regular": 4.46
+      "regular": 4.4201
     }
   ],
   "diesel": {
-    "Alaska": 6.5255,
-    "Alabama": 5.9216,
-    "Arkansas": 5.9177,
-    "Arizona": 6.3727,
-    "California": 8.4986,
-    "Colorado": 6.5804,
-    "Connecticut": 6.4385,
-    "District of Columbia": 6.5045,
-    "Delaware": 6.331,
-    "Florida": 6.0062,
-    "Georgia": 5.7466,
-    "Hawaii": 7.2677,
-    "Iowa": 6.1663,
-    "Idaho": 6.4974,
-    "Illinois": 6.5414,
-    "Indiana": 6.5676,
-    "Kansas": 6.0765,
-    "Kentucky": 6.0945,
-    "Louisiana": 5.8099,
-    "Massachusetts": 6.3348,
-    "Maryland": 6.3683,
-    "Maine": 6.4287,
-    "Michigan": 6.4127,
-    "Minnesota": 6.2322,
-    "Missouri": 6.0305,
-    "Mississippi": 5.8759,
-    "Montana": 6.1745,
-    "North Carolina": 5.5975,
-    "North Dakota": 6.0617,
-    "Nebraska": 6.169,
-    "New Hampshire": 6.3641,
-    "New Jersey": 6.3935,
-    "New Mexico": 6.1406,
-    "Nevada": 6.8666,
-    "New York": 6.5058,
-    "Ohio": 6.1727,
-    "Oklahoma": 5.9318,
-    "Oregon": 6.7432,
-    "Pennsylvania": 6.6146,
-    "Rhode Island": 6.3365,
-    "South Carolina": 5.8262,
-    "South Dakota": 6.0813,
-    "Tennessee": 5.9782,
-    "Texas": 5.7764,
-    "Utah": 6.4461,
-    "Virginia": 6.2895,
-    "Vermont": 6.4035,
-    "Washington": 7.3169,
-    "Wisconsin": 6.1791,
-    "West Virginia": 6.3439,
-    "Wyoming": 6.3755
+    "Alaska": 6.5001,
+    "Alabama": 5.9103,
+    "Arkansas": 5.9107,
+    "Arizona": 6.3359,
+    "California": 8.4296,
+    "Colorado": 6.5632,
+    "Connecticut": 6.4303,
+    "District of Columbia": 6.4917,
+    "Delaware": 6.3104,
+    "Florida": 6.0858,
+    "Georgia": 5.7151,
+    "Hawaii": 7.2836,
+    "Iowa": 6.1353,
+    "Idaho": 6.5718,
+    "Illinois": 6.6845,
+    "Indiana": 6.8195,
+    "Kansas": 6.0682,
+    "Kentucky": 6.1308,
+    "Louisiana": 5.7914,
+    "Massachusetts": 6.333,
+    "Maryland": 6.3469,
+    "Maine": 6.4188,
+    "Michigan": 6.7662,
+    "Minnesota": 6.2129,
+    "Missouri": 6.0977,
+    "Mississippi": 5.8642,
+    "Montana": 6.1644,
+    "North Carolina": 5.5444,
+    "North Dakota": 6.1013,
+    "Nebraska": 6.1934,
+    "New Hampshire": 6.3586,
+    "New Jersey": 6.3853,
+    "New Mexico": 6.0352,
+    "Nevada": 6.8507,
+    "New York": 6.4959,
+    "Ohio": 6.4942,
+    "Oklahoma": 5.9294,
+    "Oregon": 6.7396,
+    "Pennsylvania": 6.6068,
+    "Rhode Island": 6.3219,
+    "South Carolina": 5.8048,
+    "South Dakota": 6.0728,
+    "Tennessee": 5.9662,
+    "Texas": 5.7938,
+    "Utah": 6.5355,
+    "Virginia": 6.2489,
+    "Vermont": 6.3696,
+    "Washington": 7.2996,
+    "Wisconsin": 6.385,
+    "West Virginia": 6.3897,
+    "Wyoming": 6.4396
   }
 }

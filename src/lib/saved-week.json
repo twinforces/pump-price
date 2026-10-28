@@ -1,59 +1,59 @@
 {
-  "week": "2026-10-16",
-  "crude": 99.93,
-  "gasolineSpot": 3.394,
-  "dieselSpot": 4.836,
-  "gasolineCrack": 1.0147142857142857,
-  "dieselCrack": 2.456714285714286,
+  "week": "2026-10-23",
+  "crude": 107.17,
+  "gasolineSpot": 3.183,
+  "dieselSpot": 4.948,
+  "gasolineCrack": 0.6313333333333331,
+  "dieselCrack": 2.3963333333333336,
   "quality": {
     "month": "2026-07-15",
     "sulfur": 1.24,
     "api": 33.71
   },
   "californiaDock": {
-    "gasoline": 0.24099999999999966,
-    "diesel": 0.48799999999999955
+    "gasoline": 0.3280000000000003,
+    "diesel": 0.38599999999999923
   },
   "losAngelesGasoline": {
-    "date": "2026-10-16",
-    "value": 3.635
+    "date": "2026-10-23",
+    "value": 3.511
   },
   "newYorkGasoline": {
-    "date": "2026-10-16",
-    "value": 2.971
+    "date": "2026-10-23",
+    "value": 2.925
   },
   "newYorkDiesel": {
-    "date": "2026-10-16",
-    "value": 5.027
+    "date": "2026-10-23",
+    "value": 5.201
   },
   "ethanol": {
     "date": "USDA weekly",
-    "dollarsPerGallon": 1.96
+    "dollarsPerGallon": 1.83
   },
   "refinery": {
-    "week": "2026-10-16",
-    "utilization": 93.4,
-    "gasolineShare": 0.5856207580034837,
-    "distillateShare": 0.31425310829479247
+    "week": "2026-10-23",
+    "utilization": 92.8,
+    "gasolineShare": 0.5591794747670338,
+    "distillateShare": 0.3122957763524144
   },
   "lag": {
     "gasoline": {
-      "date": "2026-10-02",
-      "crack": 1.2927142857142857
+      "date": "2026-10-09",
+      "crack": 0.9613333333333332
     },
     "diesel": {
-      "date": "2026-09-25",
-      "crack": 2.4907142857142857
+      "date": "2026-10-02",
+      "crack": 2.179333333333333
     }
   },
   "importTravel": {
-    "california": -0.05261418617033608,
-    "washington": -0.07644792374452633,
-    "east": -0.037706838569682904,
-    "midwest": -0.030844385373032003,
-    "gulf": -0.011272008362690412,
-    "rockies": -0.03199728252111923,
+    "california": -0.10924543371067431,
+    "washington": -0.17401787280832273,
+    "east": -0.2108247215548037,
+    "midwest": -0.1706390997249985,
+    "gulf": -0.02100095292166857,
+    "rockies": -0.07595420506652532,
     "alaska": 0,
-    "hawaii": -0.08637460570820538
+    "hawaii": -0.17934386044920758
   }
 }
